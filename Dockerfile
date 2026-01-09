@@ -43,7 +43,7 @@ WORKDIR /var/www/html
 COPY . .
 
 # -------------------------------------------------
-# 6. Composer
+# 6. Composer (NO SCRIPTS — VERY IMPORTANT)
 # -------------------------------------------------
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -51,7 +51,8 @@ RUN composer install \
     --no-dev \
     --no-interaction \
     --prefer-dist \
-    --optimize-autoloader
+    --optimize-autoloader \
+    --no-scripts
 
 # -------------------------------------------------
 # 7. Permissions
@@ -61,7 +62,7 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 EXPOSE 80
 
 # -------------------------------------------------
-# 8. RUNTIME ONLY (SAFE)
+# 8. Runtime only (SAFE)
 # -------------------------------------------------
 CMD php artisan key:generate --force || true && \
     php artisan migrate --force || true && \
