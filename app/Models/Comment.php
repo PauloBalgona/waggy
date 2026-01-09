@@ -19,10 +19,18 @@ class Comment extends Model
     public function post()
     {
         return $this->belongsTo(Post::class);
-        }
+    }
 
-        public function replies()
-        {
-            return $this->hasMany(Reply::class);
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }
+
+    // Cascade delete replies when comment is deleted
+    protected static function booted()
+    {
+        static::deleting(function ($comment) {
+            $comment->replies()->delete();
+        });
     }
 }

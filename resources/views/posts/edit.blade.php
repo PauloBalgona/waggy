@@ -1,4 +1,4 @@
-@extends('navbar.nav2')
+@extends('navbar.nav')
 @section('title', 'Edit Post - Waggy')
 @section('content')
 

@@ -8,8 +8,8 @@
         "start": "concurrently \"npm run dev\" \"php artisan serve --host=0.0.0.0 --port=5000\""
     },
     "dependencies": {
-        "laravel-echo": "^1.11.3",
-        "pusher-js": "^8.0.1"
+        "laravel-echo": "^1.19.0",
+        "pusher-js": "^8.4.0"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

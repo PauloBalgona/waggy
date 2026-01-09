@@ -77,12 +77,7 @@
             "dont-discover": []
         }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/sujalpatildev/laravel-websockets"
-        }
-    ],
+    
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",

@@ -22,14 +22,15 @@ class HomeController extends Controller
 
         // Apply filters based on URL parameters
 
-        // Filter by age
-        if ($request->has('age') && $request->age != '') {
-            $query->where('age', $request->age);
+
+        // Filter by age (from filter form) - only if numeric
+        if ($request->filled('filter_age') && is_numeric($request->input('filter_age'))) {
+            $query->where('age', (int)$request->input('filter_age'));
         }
 
-        // Filter by breed
-        if ($request->has('breed') && $request->breed != '') {
-            $query->where('breed', $request->breed);
+        // Filter by breed (from filter form)
+        if ($request->filled('filter_breed')) {
+            $query->where('breed', $request->input('filter_breed'));
         }
 
         // Filter by city
@@ -47,9 +48,10 @@ class HomeController extends Controller
             $query->where('interest', $request->interest);
         }
 
-        // Filter by audience/interest
-        if ($request->has('audience') && $request->audience != '') {
-            if ($request->audience === 'friends') {
+        // Filter by audience (from filter form)
+        if ($request->filled('filter_audience')) {
+            $aud = strtolower($request->input('filter_audience'));
+            if ($aud === 'friends' || $aud === 'friends only') {
                 // Get friend IDs of current user using FriendRequest model
                 $friendIds = \App\Models\FriendRequest::where(function ($q) {
                     $q->where('sender_id', auth()->id())
@@ -67,8 +69,9 @@ class HomeController extends Controller
 
                 $friendIds[] = auth()->id(); // Include own posts
                 $query->whereIn('user_id', $friendIds);
-            } elseif ($request->audience === 'public') {
-                $query->where('audience', 'public');
+                $query->where('audience', 'friends'); // Only show friends-only posts
+            } elseif ($aud === 'public') {
+                $query->where('audience', 'public'); // Only show public posts
             }
         }
 
@@ -84,10 +87,12 @@ class HomeController extends Controller
             $query->whereNotIn('user_id', $usersWhoBlockedMe);
         }
 
-        // Get the filtered posts
-        $posts = $query->get();
+
+        // Paginate the filtered posts (10 per page)
+        $posts = $query->paginate(10);
 
         // Combine comments + replies into a single comments_count value for display
+
         foreach ($posts as $p) {
             $p->comments_count = ($p->comments_count ?? 0) + ($p->replies_count ?? 0);
         }

@@ -13,7 +13,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::with('user')->latest()->get();
+        $posts = Post::with('user')->latest()->paginate(10);
         return view('posts.index', compact('posts'));
     }
 
@@ -32,54 +32,64 @@ class PostController extends Controller
             'image_base64' => 'nullable|string'
         ]);
 
-        $age = $request->input('age');
-        $audience = strtolower($request->input('audience'));
-
-        // Default audience 
+        $audience = strtolower($request->input('audience', 'public'));
         if (!in_array($audience, ['public', 'friends'])) {
             $audience = 'public';
         }
 
         $photoPath = null;
 
-        // Handle file upload
+        // FILE UPLOAD
         if ($request->hasFile('photoUpload')) {
             $photoPath = $request->file('photoUpload')->store('posts', 'public');
         }
 
+        // BASE64 IMAGE
         if (!$photoPath && $request->image_base64) {
-            $data = $request->image_base64;
-            $data = str_replace('data:image/png;base64,', '', $data);
-            $data = str_replace('data:image/jpeg;base64,', '', $data);
-            $data = base64_decode($data);
-
+            $data = preg_replace('#^data:image/\w+;base64,#i', '', $request->image_base64);
             $fileName = 'post_' . time() . '.jpg';
             $path = storage_path('app/public/posts/' . $fileName);
 
-            // Create directory
-            if (!file_exists(storage_path('app/public/posts'))) {
-                mkdir(storage_path('app/public/posts'), 0755, true);
+            if (!file_exists(dirname($path))) {
+                mkdir(dirname($path), 0755, true);
             }
 
-            file_put_contents($path, $data);
+            file_put_contents($path, base64_decode($data));
             $photoPath = 'posts/' . $fileName;
         }
 
         // CREATE POST
-        Post::create([
+        $post = Post::create([
             'user_id' => auth()->id(),
-            'message' => $request->input('content'),
-            'age' => $age,
-            'breed' => $request->input('breed'),
-            'province' => $request->input('province'),
-            'city' => $request->input('city'),
-            'interest' => $request->input('interest'),
+            'message' => $request->content,
+            'age' => $request->age,
+            'breed' => $request->breed,
+            'province' => $request->province,
+            'city' => $request->city,
+            'interest' => $request->interest,
             'audience' => $audience,
             'photo' => $photoPath,
         ]);
 
-        // CLEAR SESSION IMAGE
         session()->forget('uploaded_image_path');
+
+        // Broadcast PostCreated event for real-time updates
+        try {
+            $postHtml = view('components.post-card', ['post' => $post->load('user')])->render();
+            \Illuminate\Support\Facades\Queue::push(function () use ($post, $postHtml) {
+                event(new \App\Events\PostCreated($post, $postHtml));
+            });
+        } catch (\Exception $e) {
+            \Log::error('Failed to broadcast PostCreated: ' . $e->getMessage());
+        }
+
+        // AJAX RESPONSE
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'post' => $post->load('user'),
+            ]);
+        }
 
         return redirect()->route('home')->with('success', 'Post created successfully!');
     }
@@ -87,9 +97,11 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::with(['user', 'comments.user', 'comments.replies.user'])->findOrFail($id);
-        
-        // Check if user is blocked or blocking this post's author
-        if (Auth::user()->hasBlocked($post->user_id) || Auth::user()->isBlockedBy($post->user_id)) {
+
+        if (
+            Auth::user()->hasBlocked($post->user_id) ||
+            Auth::user()->isBlockedBy($post->user_id)
+        ) {
             return redirect()->route('home')->with('error', 'You cannot view this post.');
         }
 
@@ -112,9 +124,9 @@ class PostController extends Controller
                 'post_id' => $id,
                 'user_id' => auth()->id(),
             ]);
+
             $post->increment('likes_count');
 
-            // Create notification
             if ($post->user_id !== auth()->id()) {
                 Notification::create([
                     'user_id' => $post->user_id,
@@ -129,12 +141,6 @@ class PostController extends Controller
         return back();
     }
 
-    public function create(Request $request)
-    {
-        $image = $request->image ?? null;
-        return view('posts.index', compact('image'));
-    }
-
     public function setUploadSession(Request $request)
     {
         if ($request->hasFile('image')) {
@@ -147,7 +153,7 @@ class PostController extends Controller
         return response()->json(['success' => false]);
     }
 
-    public function clearUploadSession(Request $request)
+    public function clearUploadSession()
     {
         session()->forget('uploaded_image');
         return response()->json(['success' => true]);
@@ -155,9 +161,10 @@ class PostController extends Controller
 
     public function postingPage()
     {
-        $image = session('uploaded_image') ?? null;
+        $image = session('uploaded_image');
         $userPetAge = auth()->user()->pet_age;
         $userPetBreed = auth()->user()->pet_breed;
+
         return view('posts.index', compact('image', 'userPetAge', 'userPetBreed'));
     }
 
@@ -208,33 +215,28 @@ class PostController extends Controller
             'photoUpload' => 'nullable|image|max:4096',
         ]);
 
-        $age = $request->input('age');
-        $audience = strtolower($request->input('audience'));
-
-        // Default audience
+        $audience = strtolower($request->input('audience', 'public'));
         if (!in_array($audience, ['public', 'friends'])) {
             $audience = 'public';
         }
 
-        $photoPath = $post->photo; // Keep existing photo by default
+        $photoPath = $post->photo;
 
-        // Handle file upload (new photo)
         if ($request->hasFile('photoUpload')) {
-            // Delete old photo
             if ($post->photo && file_exists(storage_path('app/public/' . $post->photo))) {
                 unlink(storage_path('app/public/' . $post->photo));
             }
+
             $photoPath = $request->file('photoUpload')->store('posts', 'public');
         }
 
-        // UPDATE POST
         $post->update([
-            'message' => $request->input('content'),
-            'age' => $age,
-            'breed' => $request->input('breed'),
-            'province' => $request->input('province'),
-            'city' => $request->input('city'),
-            'interest' => $request->input('interest'),
+            'message' => $request->content,
+            'age' => $request->age,
+            'breed' => $request->breed,
+            'province' => $request->province,
+            'city' => $request->city,
+            'interest' => $request->interest,
             'audience' => $audience,
             'photo' => $photoPath,
         ]);
@@ -250,22 +252,18 @@ class PostController extends Controller
     public function block($user_id)
     {
         $currentUserId = Auth::id();
-        $userIdToBlock = $user_id;
 
-        // Prevent user from blocking themselves
-        if ($currentUserId === (int)$userIdToBlock) {
+        if ($currentUserId === (int)$user_id) {
             return back()->with('error', 'You cannot block yourself.');
         }
 
-        // Check if already blocked
-        if (Auth::user()->hasBlocked($userIdToBlock)) {
+        if (Auth::user()->hasBlocked($user_id)) {
             return back()->with('error', 'This user is already blocked.');
         }
 
-        // Create the block record
         Block::create([
             'user_id' => $currentUserId,
-            'blocked_user_id' => $userIdToBlock,
+            'blocked_user_id' => $user_id,
         ]);
 
         return back()->with('success', 'User has been blocked.');
@@ -273,18 +271,13 @@ class PostController extends Controller
 
     public function unblock($user_id)
     {
-        $currentUserId = Auth::id();
-
-        // Delete the block record
-        Block::where('user_id', $currentUserId)
+        Block::where('user_id', Auth::id())
             ->where('blocked_user_id', $user_id)
             ->delete();
 
-        // If it's an AJAX request, return JSON
         if (request()->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'User has been unblocked.',
                 'blocked_user_id' => $user_id
             ]);
         }

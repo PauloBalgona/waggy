@@ -18,6 +18,32 @@
                 max-width: 100% !important;
             }
 
+            /* Make all selects and textarea full width on mobile */
+            .form-select,
+            textarea {
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            /* Stack selects vertically and remove grid columns/gutters */
+            .row.g-2 {
+                display: block !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                gap: 0 !important;
+            }
+            .row.g-2 > .col-6 {
+                width: 100% !important;
+                max-width: 100% !important;
+                flex: none !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                margin-bottom: 10px !important;
+            }
+            .row.g-2 > .col-6:last-child {
+                margin-bottom: 0 !important;
+            }
+
             .position-absolute.top-0.start-0 {
                 width: 28px !important;
                 height: 28px !important;

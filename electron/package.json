@@ -1,0 +1,41 @@
+{
+  "name": "waggy-desktop",
+  "version": "0.1.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "check": "node ./scripts/check-prereqs.js",
+    "add-php": "powershell -ExecutionPolicy Bypass -File ./scripts/get-php.ps1",
+    "prepare-build": "node ./scripts/prepare-build.js",
+    "dist": "npm run prepare-build && electron-builder --publish never",
+    "pack": "npm run prepare-build && electron-builder --dir"
+  },
+  "build": {
+    "appId": "com.example.waggy",
+    "productName": "Waggy",
+    "win": {
+      "target": ["nsis", "portable"]
+    },
+    "extraResources": [
+      { "from": "php", "to": "php" },
+      { "from": "../vendor", "to": "laravel/vendor" },
+      { "from": "../database", "to": "laravel/database" },
+      { "from": "../storage", "to": "laravel/storage", "filter": ["**/*"] },
+      { "from": "../bootstrap/cache", "to": "laravel/bootstrap/cache" },
+      { "from": "../.env.example", "to": "laravel/.env.example" },
+      { "from": "../artisan", "to": "laravel/artisan" },
+      { "from": "../bootstrap/app.php", "to": "laravel/bootstrap/app.php" },
+      { "from": "../bootstrap/providers.php", "to": "laravel/bootstrap/providers.php" },
+      { "from": "../public", "to": "laravel/public", "filter": ["**/*"] },
+      { "from": "../app", "to": "laravel/app", "filter": ["**/*"] },
+      { "from": "../config", "to": "laravel/config", "filter": ["**/*"] },
+      { "from": "../resources", "to": "laravel/resources", "filter": ["**/*"] },
+      { "from": "../routes", "to": "laravel/routes", "filter": ["**/*"] },
+      { "from": "extra/ffmpeg/ffmpeg.dll", "to": "ffmpeg.dll" }
+    ]
+  },
+  "devDependencies": {
+    "electron": "^26.0.0",
+    "electron-builder": "^24.0.0"
+  }
+}

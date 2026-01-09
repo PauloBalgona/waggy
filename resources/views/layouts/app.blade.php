@@ -11,7 +11,9 @@
     <meta name="pusher-port" content="{{ env('PUSHER_PORT', 6001) }}">
     <meta name="pusher-scheme" content="{{ env('PUSHER_SCHEME', 'http') }}">
     <meta name="broadcast-auth-endpoint" content="{{ route('broadcasting.auth') }}">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Load CSS synchronously to prevent FOUC -->
+    <link href="{{ Vite::asset('resources/css/app.css') }}" rel="stylesheet">
+    <script type="module" src="{{ Vite::asset('resources/js/app.js') }}" defer></script>
 </head>
 <body class="@yield('body-class', 'bg-gray-100')">
     @yield('content')

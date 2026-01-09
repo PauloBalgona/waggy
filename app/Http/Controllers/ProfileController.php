@@ -17,11 +17,11 @@ class ProfileController extends Controller
         $posts = Post::where('user_id', $user->id)
             ->with('likes')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         $dogPhotos = DogPhoto::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         // Get friends
         $friendIds = FriendRequest::where(function ($query) {
@@ -35,14 +35,14 @@ class ProfileController extends Controller
             })
             ->unique();
 
-        $friends = User::whereIn('id', $friendIds)->get();
+        $friends = User::whereIn('id', $friendIds)->paginate(10);
 
         // Get liked posts
         $likedPostIds = PostLike::where('user_id', auth()->id())->pluck('post_id');
         $likedPosts = Post::whereIn('id', $likedPostIds)
             ->with('user', 'likes')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         $isOwnProfile = true;
 
@@ -63,11 +63,11 @@ class ProfileController extends Controller
         $posts = Post::where('user_id', $user->id)
             ->with('likes')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         $dogPhotos = DogPhoto::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         // Get friends of the viewed user
         $friendIds = FriendRequest::where(function ($query) use ($userId) {
@@ -81,14 +81,14 @@ class ProfileController extends Controller
             })
             ->unique();
 
-        $friends = User::whereIn('id', $friendIds)->get();
+        $friends = User::whereIn('id', $friendIds)->paginate(10);
 
         // Get liked posts
         $likedPostIds = PostLike::where('user_id', $user->id)->pluck('post_id');
         $likedPosts = Post::whereIn('id', $likedPostIds)
             ->with('user', 'likes')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         $isOwnProfile = false;
 
@@ -109,6 +109,15 @@ class ProfileController extends Controller
     // SEND FRIEND REQUEST
     public function addFriend($receiverId)
     {
+        // Delete any existing pending requests between the two users (both directions)
+        FriendRequest::where(function($q) use ($receiverId) {
+            $q->where('sender_id', auth()->id())
+              ->where('receiver_id', $receiverId);
+        })->orWhere(function($q) use ($receiverId) {
+            $q->where('sender_id', $receiverId)
+              ->where('receiver_id', auth()->id());
+        })->where('status', 'pending')->delete();
+
         FriendRequest::create([
             'sender_id' => auth()->id(),
             'receiver_id' => $receiverId,
@@ -121,12 +130,27 @@ class ProfileController extends Controller
     // CANCEL FRIEND REQUEST
     public function cancelFriend($receiverId)
     {
-        FriendRequest::where('sender_id', auth()->id())
-            ->where('receiver_id', $receiverId)
-            ->where('status', 'pending')
-            ->delete();
-
-        return back()->with('success', 'Friend request cancelled!');
+        // Cancel all pending requests between the two users (both directions)
+        $pending = FriendRequest::where(function($q) use ($receiverId) {
+            $q->where('sender_id', auth()->id())
+              ->where('receiver_id', $receiverId);
+        })->orWhere(function($q) use ($receiverId) {
+            $q->where('sender_id', $receiverId)
+              ->where('receiver_id', auth()->id());
+        })->where('status', 'pending');
+        $count = $pending->count();
+        if ($count > 0) {
+            $pending->delete();
+            if (request()->expectsJson()) {
+                return response()->json(['success' => true, 'message' => 'Friend request cancelled!']);
+            }
+            return back()->with('success', 'Friend request cancelled!');
+        } else {
+            if (request()->expectsJson()) {
+                return response()->json(['success' => false, 'error' => 'No pending friend request found.'], 404);
+            }
+            return back()->with('error', 'No pending friend request found.');
+        }
     }
 
     // UNFRIEND

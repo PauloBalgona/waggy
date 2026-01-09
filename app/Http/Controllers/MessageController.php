@@ -131,24 +131,19 @@ class MessageController extends Controller
     public function getConversation($userId)
     {
         $authId = Auth::id();
-        $user = User::findOrFail($userId);
+        $sinceId = request('since_id');
 
-        // Get messages between current user and selected user
-        $messages = Message::where(function ($q) use ($authId, $userId) {
-            $q->where('sender_id', $authId)
-                ->where('receiver_id', $userId);
-        })
-            ->orWhere(function ($q) use ($authId, $userId) {
-                $q->where('sender_id', $userId)
-                    ->where('receiver_id', $authId);
-            })
-            ->with('sender')
+        // Only get messages sent by the other user to the current user
+        $query = Message::where('sender_id', $userId)
+            ->where('receiver_id', $authId);
+
+        if ($sinceId) {
+            $query->where('id', '>', $sinceId);
+        }
+
+        $messages = $query->with('sender')
             ->orderBy('created_at', 'asc')
-            ->get()
-            ->filter(function ($message) use ($authId) {
-                // Exclude messages that have been deleted for this user
-                return !$message->isDeletedFor($authId);
-            });
+            ->get();
 
         return response()->json([
             'messages' => $messages->map(function ($message) {
@@ -218,16 +213,9 @@ class MessageController extends Controller
                 'success' => true,
                 'message' => [
                     'id' => $message->id,
-                    'sender_id' => $message->sender_id,
-                    'receiver_id' => $message->receiver_id,
                     'message' => $message->message,
-                    'created_at' => $message->created_at->format('Y-m-d H:i:s'),
-                    'sender' => [
-                        'id' => $message->sender->id,
-                        'pet_name' => $message->sender->pet_name,
-                        'avatar' => $message->sender->avatar,
-                    ]
-                ],
+                    'created_at' => $message->created_at->format('h:i A'),
+                ]
             ]);
         } catch (\Exception $e) {
             // Log the exception and return JSON error so the frontend can display a helpful message

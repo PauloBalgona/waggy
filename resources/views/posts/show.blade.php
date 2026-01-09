@@ -9,231 +9,243 @@
         }
 
         .post-container {
-            max-width: 100%;
+            max-width: 80%;
             margin: 0;
             padding: 0;
             width: 100%;
-            background-color: #0f1419;
-            min-height: 100vh;
+            min-height: 80vh;
         }
 
-        .post-card {
-            background-color: #1c2230;
-            border-radius: 16px;
-            padding: 28px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            margin: 24px auto;
-            border: 1px solid #2d3748;
-            max-width: 800px;
-        }
+       .post-card {
+    background-color: #1c2230;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    margin: 24px auto;
+    border: 1px solid #2d3748;
+    max-width: 650px;
+    min-height: 300px; /* bawasan height */
+}
 
-        .post-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
+.post-image {
+    width: 100%;
+    height: 300px;
+    border-radius: 12px;
+    object-fit: contain; /* show full image, not cropped */
+    margin-bottom: 20px;
+    background-color: #fff; /* white bg for transparent images */
+    display: block;
+    border: 1px solid #2d3748;
+}
 
-        .post-user-avatar {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
+.post-content {
+    line-height: 1.5; /* medyo mas compact lang */
+    margin-bottom: 20px;
+}
 
-        .post-user-info {
-            flex: 1;
-        }
+/* --- lahat ng iba, intact --- */
 
-        .post-user-name {
-            color: white;
-            font-weight: 700;
-            font-size: 16px;
-            margin: 0;
-        }
+.main-wrapper {
+    padding: 0 !important;
+}
 
-        .post-user-breed {
-            color: #8b95a5;
-            font-size: 13px;
-            margin: 4px 0 0 0;
-        }
+.post-container {
+    max-width: 80%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 80vh;
+}
 
-        .post-time {
-            color: #6b7280;
-            font-size: 12px;
-            margin: 0;
-        }
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
 
-        .post-content {
-            color: #e5e7eb;
-            line-height: 1.7;
-            margin-bottom: 20px;
-            font-size: 15px;
-        }
+.post-user-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
 
-        .post-image {
-            width: 100%;
-            height: auto;
-            max-height: 600px;
-            border-radius: 12px;
-            object-fit: contain;
-            margin-bottom: 20px;
-            background-color: #0f1419;
-            display: block;
-            border: 1px solid #2d3748;
-        }
+.post-user-info {
+    flex: 1;
+}
 
-        .post-actions {
-            display: flex;
-            gap: 12px;
-            padding-top: 20px;
-            border-top: 1px solid #2d3748;
-        }
+.post-user-name {
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    margin: 0;
+}
 
-        .post-action-btn {
-            flex: 1;
-            padding: 12px;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            color: #8b95a5;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            font-weight: 500;
-            font-size: 14px;
-        }
+.post-user-breed {
+    color: #8b95a5;
+    font-size: 13px;
+    margin: 4px 0 0 0;
+}
 
-        .post-action-btn:hover {
-            color: #3b82f6;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));
-            border-color: rgba(59, 130, 246, 0.4);
-        }
+.post-time {
+    color: #6b7280;
+    font-size: 12px;
+    margin: 0;
+}
 
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            color: white;
-            text-decoration: none;
-            margin: 24px auto;
-            margin-bottom: 0;
-            padding: 12px 20px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            transition: all 0.3s ease;
-            font-weight: 600;
-            font-size: 14px;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-            display: block;
-            width: fit-content;
-            margin-left: 24px;
-            margin-top: 24px;
-        }
+.post-actions {
+    display: flex;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid #2d3748;
+}
 
-        .back-btn:hover {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-            transform: translateY(-2px);
-            color: white;
-        }
+.post-action-btn {
+    flex: 1;
+    padding: 12px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    color: #8b95a5;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-weight: 500;
+    font-size: 14px;
+}
 
-        .back-btn:active {
-            transform: translateY(0px);
-        }
+.post-action-btn:hover {
+    color: #3b82f6;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));
+    border-color: rgba(59, 130, 246, 0.4);
+}
 
-        .back-btn i {
-            font-size: 16px;
-        }
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    text-decoration: none;
+    margin: 24px auto;
+    margin-bottom: 0;
+    padding: 12px 20px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    display: block;
+    width: fit-content;
+    margin-left: 24px;
+    margin-top: 24px;
+}
 
-        .post-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 16px;
-            margin: 24px 0;
-            padding: 20px;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(59, 130, 246, 0.02));
-            border-radius: 12px;
-            border: 1px solid rgba(59, 130, 246, 0.1);
-        }
+.back-btn:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
+    color: white;
+}
 
-        .detail-item {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
+.back-btn:active {
+    transform: translateY(0px);
+}
 
-        .detail-label {
-            color: #8b95a5;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+.back-btn i {
+    font-size: 16px;
+}
 
-        .detail-value {
-            color: white;
-            font-size: 15px;
-            font-weight: 600;
-        }
+.post-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(59, 130, 246, 0.02));
+    border-radius: 12px;
+    border: 1px solid rgba(59, 130, 246, 0.1);
+}
 
-        .comment-menu-btn {
-            background: none;
-            border: none;
-            color: #6b7280;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 6px;
-            transition: all 0.2s;
-            font-size: 16px;
-        }
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
 
-        .comment-menu-btn:hover {
-            color: white;
-            background-color: rgba(255, 255, 255, 0.05);
-        }
+.detail-label {
+    color: #8b95a5;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
-        .comment-menu {
-            position: absolute;
-            right: 0;
-            top: 100%;
-            background-color: #1c2230;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            min-width: 150px;
-            border: 1px solid #2d3748;
-        }
+.detail-value {
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+}
 
-        .comment-menu-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            width: 100%;
-            padding: 10px 16px;
-            background: none;
-            border: none;
-            color: #60a5fa;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
+.comment-menu-btn {
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    font-size: 16px;
+}
 
-        .comment-menu-item:hover {
-            background-color: rgba(59, 130, 246, 0.1);
-        }
+.comment-menu-btn:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.05);
+}
 
-        .comment-menu-item.delete {
-            color: #ef4444;
-        }
+.comment-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #1c2230;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    min-width: 150px;
+    border: 1px solid #2d3748;
+}
 
-        .comment-menu-item.delete:hover {
-            background-color: rgba(239, 68, 68, 0.1);
-        }
+.comment-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 16px;
+    background: none;
+    border: none;
+    color: #60a5fa;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.comment-menu-item:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.comment-menu-item.delete {
+    color: #ef4444;
+}
+
+.comment-menu-item.delete:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
     </style>
 
     <div class="post-container">
@@ -317,9 +329,9 @@
             </p>
 
             <div class="post-actions">
-                <button class="post-action-btn" onclick="likePost({{ $post->id }})">
-                    <i class="bi bi-heart"></i>
-                    <span>{{ $post->likes_count }} Likes</span>
+                <button id="like-btn" class="post-action-btn" onclick="likePost({{ $post->id }})">
+                    <i id="like-icon" class="bi bi-heart{{ $post->likes->where('user_id', auth()->id())->count() > 0 ? '-fill text-danger' : '' }}"></i>
+                    <span id="like-count">{{ $post->likes_count }} Likes</span>
                 </button>
                 <button class="post-action-btn" onclick="scrollToComments()">
                     <i class="bi bi-chat"></i>
@@ -332,6 +344,7 @@
         <div id="comments-section" class="post-card">
             <h3 style="color: white; margin-top: 0; margin-bottom: 16px;">Comments</h3>
 
+            <div id="comments-list">
             @forelse($post->comments as $comment)
                 <div style="padding: 12px 0; border-bottom: 1px solid #2d3748; position: relative;" id="comment-post-{{ $comment->id }}">
                     <div style="display: flex; gap: 12px; margin-bottom: 8px; position: relative;">
@@ -407,7 +420,6 @@
                     <div style="margin-left: 52px; margin-top: 8px;">
                         <form onsubmit="submitReply(event, {{ $comment->id }})" style="display: flex; gap: 8px;">
                             @csrf
-                            <input type="hidden" name="content" id="reply-content-{{ $comment->id }}">
                             <input type="text" placeholder="Write a reply..." id="reply-input-{{ $comment->id }}" style="flex: 1; padding: 6px 8px; background-color: #2a3142; border: 1px solid #3d4557; border-radius: 4px; color: white; font-size: 12px;" onclick="focusReplyInput({{ $comment->id }})">
                             <button type="submit" style="padding: 6px 12px; background-color: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; white-space: nowrap;">Reply</button>
                         </form>
@@ -416,32 +428,136 @@
             @empty
                 <p style="color: #6b7280; text-align: center; padding: 20px 0;">No comments yet</p>
             @endforelse
+            </div>
 
             <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #2d3748;">
                 <form action="{{ route('comments.store', $post->id) }}" method="POST" style="display: flex; gap: 12px;">
                     @csrf
-                    <textarea name="content" placeholder="Write a comment..." style="flex: 1; padding: 10px; background-color: #2a3142; border: 1px solid #3d4557; border-radius: 6px; color: white; resize: none;" rows="3" required></textarea>
-                    <button type="submit" style="padding: 10px 20px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; white-space: nowrap;">SEND</button>
+                    <textarea id="comment-content" name="content" placeholder="Write a comment..." style="flex: 1; padding: 10px; background-color: #2a3142; border: 1px solid #3d4557; border-radius: 6px; color: white; resize: none; min-height: 36px; max-height: 80px;" rows="1" required></textarea>
+                    <button id="comment-submit-btn" type="submit" style="padding: 10px 10px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; white-space: nowrap;">SEND</button>
                 </form>
             </div>
         </div>
     </div>
 
     <script>
+                // AJAX comment submission (form-encoded, Laravel default)
+                const commentForm = document.querySelector('form[action="{{ route('comments.store', $post->id) }}"]');
+                if (commentForm) {
+                    const textarea = document.getElementById('comment-content');
+                    const btn = document.getElementById('comment-submit-btn');
+                    // Allow Enter to submit (no Shift)
+                    textarea.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            btn.click();
+                        }
+                    });
+                    commentForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        const content = textarea.value.trim();
+                        if (!content) {
+                            alert('Comment cannot be empty');
+                            return;
+                        }
+                        btn.disabled = true;
+                        const formData = new FormData(commentForm);
+                        fetch(commentForm.action, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                'Accept': 'application/json'
+                            },
+                            body: formData
+                        })
+                        .then(async response => {
+                            btn.disabled = false;
+                            if (!response.ok) {
+                                const text = await response.text();
+                                throw new Error(text);
+                            }
+                            // Laravel returns redirect for non-ajax, so just reload
+                            textarea.value = '';
+                            location.reload();
+                        })
+                        .catch(error => {
+                            btn.disabled = false;
+                            alert('Failed to post comment. Please try again.');
+                            console.error('Error:', error);
+                        });
+                    });
+                }
+
+                // AJAX comment deletion
+                function deleteCommentPost(commentId) {
+                    if (confirm('Are you sure you want to delete this comment?')) {
+                        const commentDiv = document.getElementById(`comment-post-${commentId}`);
+                        if (commentDiv) {
+                            commentDiv.style.opacity = '0';
+                            commentDiv.style.transition = 'opacity 0.3s ease';
+                            setTimeout(() => {
+                                commentDiv.remove();
+                            }, 300);
+                        }
+                        fetch(`/comments/${commentId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            }
+                        }).then(response => {
+                            if (!response.ok) {
+                                alert('Failed to delete comment.');
+                                console.error('Delete failed:', response.status);
+                            }
+                        }).catch(error => {
+                            alert('Failed to delete comment.');
+                            console.error('Error:', error);
+                        });
+                    }
+                }
         function likePost(postId) {
+            const btn = document.getElementById('like-btn');
+            const icon = document.getElementById('like-icon');
+            const countSpan = document.getElementById('like-count');
+            btn.disabled = true;
             fetch(`/posts/${postId}/like`, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 }
             })
-            .then(response => {
-                if (response.ok) {
-                    location.reload();
+            .then(async response => {
+                btn.disabled = false;
+                if (response.redirected) {
+                    window.location.href = response.url;
+                    return;
+                }
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(text);
+                }
+                // Try to get updated like count from the DOM
+                let current = parseInt(countSpan.textContent);
+                let liked = icon.classList.contains('bi-heart-fill');
+                if (liked) {
+                    icon.classList.remove('bi-heart-fill', 'text-danger');
+                    icon.classList.add('bi-heart');
+                    countSpan.textContent = (current - 1) + ' Likes';
+                } else {
+                    icon.classList.remove('bi-heart');
+                    icon.classList.add('bi-heart-fill', 'text-danger');
+                    countSpan.textContent = (current + 1) + ' Likes';
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                btn.disabled = false;
+                alert('Failed to like/unlike post. Please try again.');
+                console.error('Error:', error);
+            });
         }
 
         function scrollToComments() {
@@ -716,4 +832,69 @@
                 }
             }
     </script>
+<script>
+function submitReply(e, commentId) {
+    e.preventDefault();
+    const input = document.getElementById('reply-input-' + commentId);
+    const content = input.value.trim();
+    if (!content) return;
+    input.disabled = true;
+    // Optimistically add reply to UI
+    let repliesDiv = document.querySelector(`#comment-post-${commentId} .replies-list`);
+    if (!repliesDiv) {
+        repliesDiv = document.createElement('div');
+        repliesDiv.className = 'replies-list';
+        const commentDiv = document.getElementById('comment-post-' + commentId);
+        commentDiv.appendChild(repliesDiv);
+    }
+    const optimisticId = 'optimistic-reply-' + Date.now();
+    const optimisticHtml = `<div id="${optimisticId}" style="padding:8px 0;opacity:.6;"><div style="display:flex;gap:12px;"><img src='{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('assets/usericon.png') }}' style='width:32px;height:32px;border-radius:50%;object-fit:cover;'><div style='flex:1;'><div style='background-color:#2a3142;border-radius:6px;padding:8px;border:1px solid #3d4557;'><p style='color:white;font-weight:600;margin:0;font-size:12px;'>{{ auth()->user()->pet_name }}</p><p style='color:#e5e7eb;margin:4px 0 0 0;font-size:12px;'>${escapeHtml(content)}</p></div><p style='color:#6b7280;font-size:11px;margin:4px 0 0 0;'>just now</p></div></div></div>`;
+    repliesDiv.insertAdjacentHTML('beforeend', optimisticHtml);
+    input.value = '';
+
+    const formData = new FormData();
+    formData.append('content', content);
+    fetch(`/comments/${commentId}/replies`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'),
+            'Accept': 'application/json'
+        },
+        body: formData
+    })
+    .then(async res => {
+        input.disabled = false;
+        if (!res.ok) {
+            let msg = 'Failed to send reply.';
+            try { const data = await res.json(); if (data && data.message) msg = data.message; } catch {}
+            alert(msg);
+            const optimistic = document.getElementById(optimisticId);
+            if (optimistic) optimistic.remove();
+            return;
+        }
+        const data = await res.json();
+        // Remove ALL optimistic replies for this comment
+        const allOptimistic = repliesDiv.querySelectorAll('[id^="optimistic-reply-"]');
+        allOptimistic.forEach(el => el.remove());
+        if (data && data.reply) {
+            // Render confirmed reply
+            const reply = data.reply;
+            const html = `<div style=\"padding:8px 0;position:relative;\"><div style=\"display:flex;gap:12px;\"><img src='${reply.user.avatar ? '/storage/' + reply.user.avatar : '/assets/usericon.png'}' style=\"width:32px;height:32px;border-radius:50%;object-fit:cover;\"><div style=\"flex:1;\"><div style=\"background-color:#2a3142;border-radius:6px;padding:8px;border:1px solid #3d4557;\"><p style=\"color:white;font-weight:600;margin:0;font-size:12px;\">${escapeHtml(reply.user.pet_name)}</p><p style=\"color:#e5e7eb;margin:4px 0 0 0;font-size:12px;\">${escapeHtml(reply.content)}</p></div><p style=\"color:#6b7280;font-size:11px;margin:4px 0 0 0;\">just now</p></div></div></div>`;
+            repliesDiv.insertAdjacentHTML('beforeend', html);
+        }
+    })
+    .catch(() => {
+        input.disabled = false;
+        const optimistic = document.getElementById(optimisticId);
+        if (optimistic) optimistic.remove();
+        alert('Failed to send reply.');
+    });
+}
+// Escape HTML utility
+function escapeHtml(text) {
+    return text.replace(/[&<>"']/g, function (c) {
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+}
+</script>
 @endsection

@@ -1,8 +1,8 @@
-@extends('navbar.nav1')
+@extends('navbar.nav')
 @section('title', 'Blocked Users - Waggy')
 
 @section('content')
-<div style="max-width: 900px; margin: 0 auto; padding: 20px;">
+<div style="max-width: 700px; margin: 0 auto; padding: 20px;">
     <div style="background-color: #252938; border-radius: 12px; padding: 24px;">
         <h2 style="color: white; margin-top: 0; margin-bottom: 24px; font-size: 24px; font-weight: 600;">
             Blocked Users

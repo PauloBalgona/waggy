@@ -11,6 +11,11 @@
         left:20px; 
         top: 10px;
     }
+       p.text-gray-400 {
+        text-align: right;
+        position: relative;
+        right:255px;
+    }
 }
 </style>
     <div class="min-h-screen bg-gray-900 text-white p-8">
@@ -82,9 +87,14 @@
                     @endforeach
 
                 </ul>
-            @else
-                <p class="text-gray-400">No friend requests.</p>
-            @endif
+                    @if($requests instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                        <div class="d-flex justify-content-center mt-3">
+                            {{ $requests->links('pagination::bootstrap-5') }}
+                        </div>
+                    @endif
+                @else
+                    <p class="text-gray-400">No friend requests.</p>
+                @endif
 
         </div>
     </div>

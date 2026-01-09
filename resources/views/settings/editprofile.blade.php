@@ -100,9 +100,6 @@
 
     <div class="settings-page">
 
-        <!-- Full width container with proper spacing -->
-        <div class="edit-container" style="max-width: 100%; padding: 5px 15px;">
-
             <!-- Header -->
             <div class="d-flex align-items-center gap-3 mb-5">
                 <a href="{{ route('account') }}" class="btn p-0 border-0 text-white d-flex align-items-center"
@@ -112,6 +109,8 @@
                 <h1 class="text-white fw-bold m-0" style="font-size: 25px;">Edit Profile</h1>
             </div>
 
+        <!-- Full width container with proper spacing -->
+        <div class="edit-container" style="max-width: 50%; padding: 5px 15px; position:relative; left:250px; bottom:70px">
             <!-- Form -->
             <form action="{{ route('editprofile.update') }}" method="POST" enctype="multipart/form-data" class="text-white">
                 @csrf
@@ -119,9 +118,15 @@
 
                 {{-- Success / Error messages --}}
                 @if(session('success'))
-                <div class="mb-4 alert alert-success">
+                <div id="profileSuccessAlert" class="mb-4 alert alert-success">
                     {{ session('success') }}
                 </div>
+                <script>
+                    setTimeout(function() {
+                        var alert = document.getElementById('profileSuccessAlert');
+                        if(alert) { alert.style.display = 'none'; }
+                    }, 2500);
+                </script>
                 @endif
 
                 @if($errors->any())
@@ -132,7 +137,7 @@
                 </div>
                 @endif
 
-                <p class="text-muted small">Only your profile photo can be changed here. Other fields are read-only.</p>
+                <p class="text-muted small">You can update your profile photo and pet details below.</p>
 
                 {{-- Avatar --}}
                 <div class="text-center mb-5 mt-4">
@@ -154,43 +159,45 @@
                 {{-- Pet Name --}}
                 <div class="mb-4">
                     <label class="form-label mb-2" style="font-size: 15px;">Pet Name</label>
-                    <input type="text" class="form-control bg-dark text-white border-secondary" readonly
-                        style="padding: 12px 16px; font-size: 15px;" value="{{ auth()->user()->pet_name }}">
+                    <input type="text" class="form-control bg-dark text-white border-secondary" name="pet_name"
+                        style="padding: 12px 16px; font-size: 15px;" value="{{ old('pet_name', auth()->user()->pet_name) }}">
                 </div>
 
                 {{-- Pet Breed --}}
                 <div class="mb-4">
                     <label class="form-label mb-2" style="font-size: 15px;">Pet Breed</label>
-                    <input type="text" class="form-control bg-dark text-white border-secondary" readonly
-                        style="padding: 12px 16px; font-size: 15px;" value="{{ auth()->user()->pet_breed }}">
+                    <input type="text" class="form-control bg-dark text-white border-secondary" name="pet_breed"
+                        style="padding: 12px 16px; font-size: 15px;" value="{{ old('pet_breed', auth()->user()->pet_breed) }}">
                 </div>
 
                 {{-- Pet Age --}}
                 <div class="mb-4">
                     <label class="form-label mb-2" style="font-size: 15px;">Pet Age</label>
-                    <input type="number" class="form-control bg-dark text-white border-secondary" readonly
-                        style="padding: 12px 16px; font-size: 15px;" value="{{ auth()->user()->pet_age }}">
+                    <input type="number" class="form-control bg-dark text-white border-secondary" name="pet_age" min="0"
+                        style="padding: 12px 16px; font-size: 15px;" value="{{ old('pet_age', auth()->user()->pet_age) }}">
                 </div>
 
                 {{-- Pet Gender --}}
                 <div class="mb-4">
                     <label class="form-label mb-2" style="font-size: 15px;">Pet Gender</label>
-                    <select class="form-select bg-dark text-white border-secondary" disabled
+                    <select class="form-select bg-dark text-white border-secondary" name="pet_gender"
                         style="padding: 12px 16px; font-size: 15px;">
-                        <option>{{ auth()->user()->pet_gender ?? 'N/A' }}</option>
+                        <option value="Male" {{ old('pet_gender', auth()->user()->pet_gender) == 'Male' ? 'selected' : '' }}>Male</option>
+                        <option value="Female" {{ old('pet_gender', auth()->user()->pet_gender) == 'Female' ? 'selected' : '' }}>Female</option>
+                        <option value="Other" {{ old('pet_gender', auth()->user()->pet_gender) == 'Other' ? 'selected' : '' }}>Other</option>
+                        <option value="N/A" {{ old('pet_gender', auth()->user()->pet_gender) == 'N/A' ? 'selected' : '' }}>N/A</option>
                     </select>
                 </div>
 
                 {{-- Pet Features --}}
                 <div class="mb-4">
                     <label class="form-label mb-2" style="font-size: 15px;">Pet Features</label>
-                    <textarea rows="4" class="form-control bg-dark text-white border-secondary" readonly
-                        style="padding: 12px 16px; font-size: 15px;">{{ auth()->user()->pet_features }}</textarea>
+                    <textarea rows="4" class="form-control bg-dark text-white border-secondary" name="pet_features"
+                        style="padding: 12px 16px; font-size: 15px;">{{ old('pet_features', auth()->user()->pet_features) }}</textarea>
                 </div>
 
-                {{-- Save (avatar only) --}}
-                <button id="saveBtn" class="btn btn-primary w-100 mt-5 py-3" style="font-size: 16px; font-weight: 600;">Save
-                    Photo</button>
+                {{-- Save (all fields) --}}
+                <button id="saveBtn" class="btn btn-primary w-100 mt-5 py-3" style="font-size: 16px; font-weight: 600;">Save Changes</button>
 
             </form>
 

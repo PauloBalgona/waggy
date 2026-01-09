@@ -66,20 +66,20 @@ class SettingsController extends Controller
             ]);
         }
 
-        // Only update pet details if present in the request (prevents accidental overwrite)
-        if ($request->filled('pet_name')) {
+        // Always update pet details if present in the request (allow blank/empty values)
+        if ($request->has('pet_name')) {
             $user->pet_name = $request->pet_name;
         }
-        if ($request->filled('pet_breed')) {
+        if ($request->has('pet_breed')) {
             $user->pet_breed = $request->pet_breed;
         }
-        if ($request->filled('pet_age')) {
+        if ($request->has('pet_age')) {
             $user->pet_age = $request->pet_age;
         }
-        if ($request->filled('pet_gender')) {
+        if ($request->has('pet_gender')) {
             $user->pet_gender = $request->pet_gender;
         }
-        if ($request->filled('pet_features')) {
+        if ($request->has('pet_features')) {
             $user->pet_features = $request->pet_features;
         }
 

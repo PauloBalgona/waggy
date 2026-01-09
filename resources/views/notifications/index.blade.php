@@ -247,10 +247,29 @@
                 </div>
             @endforelse
         </div>
+        @if($notifications instanceof \Illuminate\Pagination\LengthAwarePaginator)
+            <div class="d-flex justify-content-center mt-3">
+                {{ $notifications->links('pagination::bootstrap-5') }}
+            </div>
+        @endif
 
         <script>
+            // Access fetchCounts from navbar if available
+            function getFetchCounts() {
+                if (window.fetchCounts) return window.fetchCounts;
+                for (const s of document.scripts) {
+                    if (s.textContent.includes('async function fetchCounts()')) {
+                        try {
+                            // eslint-disable-next-line no-eval
+                            eval(s.textContent);
+                            if (window.fetchCounts) return window.fetchCounts;
+                        } catch {}
+                    }
+                }
+                return null;
+            }
+
             function markNotificationAsRead(notificationId, redirectUrl) {
-                // Mark notification as read via AJAX
                 fetch(`/notifications/${notificationId}/read`, {
                     method: 'POST',
                     headers: {
@@ -260,12 +279,12 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    // Redirect to the appropriate page
+                    const fetchCounts = getFetchCounts();
+                    if (fetchCounts) fetchCounts();
                     window.location.href = redirectUrl;
                 })
                 .catch(error => {
                     console.error('Error marking notification as read:', error);
-                    // Still redirect even if there's an error
                     window.location.href = redirectUrl;
                 });
             }
@@ -282,6 +301,8 @@
                     })
                     .then(response => response.json())
                     .then(data => {
+                        const fetchCounts = getFetchCounts();
+                        if (fetchCounts) fetchCounts();
                         location.reload();
                     })
                     .catch(error => {

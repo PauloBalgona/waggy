@@ -18,7 +18,7 @@ class FriendRequestController extends Controller
         $requests = FriendRequest::where('receiver_id', Auth::id())
             ->where('status', 'pending')
             ->with('sender')
-            ->get();
+            ->paginate(10);
 
         return view('friend-requests.index', compact('requests'));
     }
@@ -62,15 +62,19 @@ class FriendRequestController extends Controller
                 'data' => json_encode(['sender_id' => $senderId]),
             ]);
 
-            // Broadcast friend request and notification in realtime
+            // Broadcast friend request and notification using queue for faster response
             try {
-                event(new FriendRequestCreated($friendRequest));
+                \Illuminate\Support\Facades\Queue::push(function () use ($friendRequest) {
+                    event(new FriendRequestCreated($friendRequest));
+                });
             } catch (\Exception $e) {
                 // ignore broadcast failures
             }
 
             try {
-                event(new NotificationCreated($notification));
+                \Illuminate\Support\Facades\Queue::push(function () use ($notification) {
+                    event(new NotificationCreated($notification));
+                });
             } catch (\Exception $e) {
                 // ignore
             }

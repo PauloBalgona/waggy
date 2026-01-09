@@ -8,10 +8,37 @@
 
     <title>@yield('title', 'Waggy')</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Preload and cache critical CSS/JS for faster rendering -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    </noscript>
 
     <style>
+        /* Button and link fast rendering & feedback */
+        button, .btn, a, .home-navlinks, .filter-link {
+            transition: background-color 0.18s, color 0.18s, box-shadow 0.18s;
+            outline: none;
+        }
+        button:active, .btn:active, a:active, .home-navlinks:active, .filter-link:active {
+            filter: brightness(0.92);
+        }
+        button:focus-visible, .btn:focus-visible, a:focus-visible, .home-navlinks:focus-visible, .filter-link:focus-visible {
+            outline: 2px solid #38bdf8;
+            outline-offset: 2px;
+        }
+        /* Remove tap highlight on mobile for smoother feel */
+        button, .btn, a, .home-navlinks, .filter-link {
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Prevent double-tap zoom on buttons/links */
+        @media (pointer: coarse) {
+            button, .btn, a, .home-navlinks, .filter-link {
+                touch-action: manipulation;
+            }
+        }
         body {
             margin: 0;
             background-color: #1c2230;
@@ -135,7 +162,6 @@
             overflow-y: auto;
             padding: 1.5rem;
             background-color: #1c2230;
-            border-left: 1px solid #fff;
         }
 
         /* Mobile User Dropdown */
@@ -385,23 +411,36 @@
 
         <div class="d-flex align-items-center gap-3">
 
-            <div style="position: relative; display: flex; align-items: center; gap: 10px;">
-                <div id="searchInputContainer" style="display:none;">
-                    <input type="text" id="searchInput" placeholder="Search..."
-                        style="padding:8px 12px; background-color:#f8f9fa; border:1px solid #dee2e6; border-radius:6px; color:white; font-size:13px; width:200px;"
-                        onkeyup="searchUsers()" onkeypress="handleSearchKeypress(event)">
-                </div>
+           <div style="position: relative; display: flex; align-items: center; gap: 10px;">
 
-                <button class="btn btn-link text-white p-0" onclick="toggleSearchInput()"
-                    style="font-size:20px; opacity:.7; border:none; background:none; cursor:pointer;">
-                    <i class="bi bi-search"></i>
-                </button>
+    <!-- Search Input (floating to the left of button) -->
+    <div id="searchInputContainer" style="
+        display:none;
+        position:absolute;
+        top:50%;                       /* vertical center relative to button */
+        right:36px;                     /* just left of search button */
+        transform: translateY(-50%);
+        z-index:9999;
+        width:200px;">
+        <input type="text" id="searchInput" placeholder="Search..."
+            style="padding:8px 12px; background-color:#f8f9fa; border-radius:6px; border:none; outline:none; font-size:13px; width:100%;"
+            onkeyup="searchUsers()" onkeypress="handleSearchKeypress(event)">
+    </div>
 
-                <div id="searchDropdown"
-                    style="display:none; position:absolute; top:50px; right:0; width:300px; background-color:white; border:1px solid #dee2e6; border-radius:8px; z-index:999; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-                    <div id="searchResults" style="padding:8px; max-height:350px; overflow-y:auto;"></div>
-                </div>
-            </div>
+    <!-- Search Button -->
+    <button class="btn btn-link text-white p-0" onclick="toggleSearchInput()"
+        style="font-size:20px; opacity:.7; border:none; background:none; cursor:pointer;">
+        <i class="bi bi-search"></i>
+    </button>
+
+    <!-- Search Results Dropdown -->
+    <div id="searchDropdown"
+        style="display:none; position:absolute; top:calc(50% + 24px); right:36px; width:300px; background-color:#1c2230; border-radius:8px; z-index:999; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <div id="searchResults" style="padding:8px; max-height:350px; overflow-y:auto;"></div>
+    </div>
+
+</div>
+
 
             <!-- Desktop Profile Dropdown -->
             <div class="position-relative d-none d-md-block">
@@ -421,56 +460,51 @@
                         </a>
                     </li>
                 </ul>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
             </div>
 
-            <!-- Mobile Profile Dropdown -->
-            <div class="position-relative d-md-none">
-                <a href="#" id="mobileProfileBtn" class="d-flex align-items-center">
-                    <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('assets/usericon.png') }}"
-                        style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
-                </a>
+            <!-- Mobile Menu Dropdown -->
+<div class="position-relative d-md-none">
+    <a href="#" id="mobileProfileBtn" class="d-flex align-items-center">
+        <i class="bi bi-list text-white" style="font-size:28px;"></i>
+    </a>
 
-                <ul id="mobileUserDropdown" class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{{ route('setting') }}"><i class="bi bi-gear me-2"></i>Settings</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
-                        <a class="dropdown-item" href="#"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="bi bi-box-arrow-right me-2"></i>Logout
-                        </a>
-                    </li>
-                </ul>
-            </div>
+    <ul id="mobileUserDropdown" class="dropdown-menu p-3" style="background-color:#282C36;">
+        <!-- Existing Menu Items -->
+        <li><a class="dropdown-item text-white" href="{{ route('setting') }}"><i class="bi bi-gear me-2"></i>Settings</a></li>
+        <li><hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.1);"></li>
+        <li>
+            <a class="dropdown-item text-white" href="#"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <i class="bi bi-box-arrow-right me-2"></i>Logout
+            </a>
+        </li>
 
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
-                @csrf
-            </form>
-        </div>
+        <li><hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.1);"></li>
+
+        <!-- New Menu Items: Playdate & Breeding -->
+        <li>
+            <a class="dropdown-item text-white d-flex align-items-center justify-content-center gap-2 mt-2"
+                href="{{ route('home') }}?interest=Breeding"
+                style="background-color: rgba(255,255,255,0.1); border-radius:8px; padding:8px 0;">
+                <i class="bi bi-heart"></i>
+                <span>Breeding</span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item text-white d-flex align-items-center justify-content-center gap-2 mt-2"
+                href="{{ route('home') }}?interest=Playdate"
+                style="background-color: rgba(255,255,255,0.1); border-radius:8px; padding:8px 0;">
+                <i class="bi bi-calendar-event"></i>
+                <span>Playdate</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
     </nav>
-
-    <div id="left-sidebar">
-        <a href="{{ route('profile') }}" class="d-flex align-items-center gap-3 text-decoration-none mb-4">
-            <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('assets/usericon.png') }}"
-                style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
-            <div>
-                <h5 class="text-white m-0">{{ auth()->user()->pet_name }}</h5>
-                <small class="text-white">{{ auth()->user()->pet_breed }}</small>
-            </div>
-        </a>
-
-        <a href="{{ route('home') }}" class="filter-link d-flex align-items-center gap-3 p-2 text-decoration-none rounded"
-            data-interest="Breeding">
-            <i class="bi bi-heart text-white fs-5"></i>
-            <span class="text-white">Breeding</span>
-        </a>
-
-        <a href="{{ route('home') }}"
-            class="filter-link d-flex align-items-center gap-3 p-2 text-decoration-none mt-3 rounded"
-            data-interest="Playdate">
-            <i class="bi bi-calendar-event text-white fs-5"></i>
-            <span class="text-white">Playdate</span>
-        </a>
-    </div>
 
     <div class="main-wrapper">
         @yield('content')

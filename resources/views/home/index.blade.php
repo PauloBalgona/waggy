@@ -4,7 +4,18 @@
 
 @section('content')
 
+
     <style>
+    #filter-section .btn-link,
+    #filter-section .btn-link:focus,
+    #filter-section .btn-link:active,
+    #filter-section .btn-link:focus-visible {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    border: none !important;
+}
+
         .modal-container {
             position: fixed;
             top: 0;
@@ -179,181 +190,205 @@
         *::-webkit-scrollbar {
             display: none;
         }
-        /* =========================
-   MOBILE ONLY FIX
-   ========================= */
-@media (max-width: 768px) {
+        
+        /* MOBILE ONLY FIX */
+        @media (max-width: 768px) {
+            /* USER ICON (POSTING + POSTS) */
+        section.post img.rounded-circle,
+        .post .rounded-circle {
+            width: 36px !important;
+            height: 36px !important;
+            object-fit: cover !important;
+            margin-top: 0 !important;
+        }
 
-    /* POST CONTAINER FULL WIDTH */
-    .post-container {
-        max-width: 100% !important;
-        margin-left: 0 !important;
-        padding: 0 !important;
-    }
+        /* ADD THIS - FORCE ROUND AVATAR */
+        section.post img.rounded-circle,
+        .post .rounded-circle,
+        .post img[src*="avatar"],
+        .post img[src*="usericon"] {
+            border-radius: 50% !important;
+            display: block !important;
+            position: relative !important;
+            left: 7px !important;
+        }
 
-    /* POST CARD */
-    .post {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 0 12px 0 !important;
-        border-radius: 0 !important;
-    }
+            
 
-    /* IMAGE EDGE TO EDGE */
-    .post > div[style*="background-color:#1B1E25"] {
-        margin-left: -16px !important;
-        margin-right: -16px !important;
-        border-radius: 0 !important;
-    }
+            /* POST CONTAINER FULL WIDTH */
+            .post-container {
+                max-width: 100% !important;
+                margin-left: 0 !important;
+                padding: 0 !important;
+            }
 
-    .post img {
-        width: 100% !important;
-        height: auto !important;
-        display: block !important;
-    }
+            /* POST CARD */
+            .post {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 0 12px 0 !important;
+                border-radius: 0 !important;
+            }
 
-    /* ACTION BUTTONS CENTERED */
-    .post .border-top {
-        justify-content: center !important;
-        gap: 40px !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-    }
+            /* IMAGE EDGE TO EDGE */
+            .post > div[style*="background-color:#1B1E25"] {
+                margin-left: -16px !important;
+                margin-right: -16px !important;
+                border-radius: 0 !important;
+            }
 
-    .post .border-top form,
-    .post .border-top a {
-        flex: 0 !important;
-    }
+            .post img {
+                width: 100% !important;
+                height: auto !important;
+                display: block !important;
+            }
 
-     .post > div[style*="max-height"] {
-        margin-left: -8px !important;
-        margin-right: -8px !important;
-        width: calc(100% + 16px) !important;
-        border-radius: 0 !important;
-    }
+            /* ACTION BUTTONS CENTERED */
+            .post .border-top {
+                justify-content: center !important;
+                gap: 40px !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
 
-    .post > div img {
-        width: 100% !important;
-        height: auto !important;
-        object-fit: cover !important;
-        border-radius: 0 !important;
-        display: block !important;
-    }
+            .post .border-top form,
+            .post .border-top a {
+                flex: 0 !important;
+            }
 
-    /* ===== USER ICON (POSTING + POSTS) ===== */
-    section.post img.rounded-circle,
-    .post .rounded-circle {
-        width: 36px !important;
-        height: 36px !important;
-        object-fit: cover !important;
-        margin-top: 0 !important;
-    }
+            .post > div[style*="max-height"] {
+                margin-left: -8px !important;
+                margin-right: -8px !important;
+                width: calc(100% + 16px) !important;
+                border-radius: 0 !important;
+            }
 
-    /* ALIGN ICON + INPUT */
-    section.post .d-flex.align-items-start {
-        align-items: center !important;
-        gap: 10px !important;
-    }
+            .post > div img {
+                width: 100% !important;
+                height: auto !important;
+                object-fit: cover !important;
+                border-radius: 0 !important;
+                display: block !important;
+            }
 
-    /* WHAT'S ON YOUR MIND */
-    section.post div[onclick] {
-        min-height: 38px !important;
-        padding: 8px 12px !important;
-        font-size: 12.5px !important;
-        border-radius: 10px !important;
-        line-height: 1.3 !important;
-    }
+            /* USER ICON (POSTING + POSTS) */
+            section.post img.rounded-circle,
+            .post .rounded-circle {
+                width: 36px !important;
+                height: 36px !important;
+                object-fit: cover !important;
+                margin-top: 0 !important;
+            }
 
-    /* IMAGE BUTTON */
-    #photoBtn {
-        width: 40px !important;
-        height: 38px !important;
-        border-radius: 10px !important;
-    }
+            /* ALIGN ICON + INPUT */
+            section.post .d-flex.align-items-start {
+                align-items: center !important;
+                gap: 10px !important;
+            }
 
-    #photoBtn i {
-        font-size: 18px !important;
-    }
+            /* WHAT'S ON YOUR MIND */
+            section.post div[onclick] {
+                min-height: 38px !important;
+                padding: 8px 12px !important;
+                font-size: 12.5px !important;
+                border-radius: 10px !important;
+                line-height: 1.3 !important;
+            }
 
-    /* ===== FILTER SECTION ===== */
-    #filter-section {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        gap: 10px 12px !important;
-        padding: 8px 0 4px !important;
-    }
+            /* IMAGE BUTTON */
+            #photoBtn {
+                width: 40px !important;
+                height: 38px !important;
+                border-radius: 10px !important;
+            }
 
-    #filter-section button,
-    #filter-section a {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 6px !important;
-        font-size: 12px !important;
-        padding: 6px 8px !important;
-        border-radius: 10px !important;
-    }
+            #photoBtn i {
+                font-size: 18px !important;
+            }
 
-    #filter-section i {
-        font-size: 16px !important;
-    }
-    #filter-section a {
-        justify-content: flex-start !important;
-        padding-left: 11px !important;
-    }
-     /* LIKE + COMMENT WRAPPER */
-    .post .d-flex.justify-content-around {
-        justify-content: space-evenly !important;
-        padding: 6px 0 !important;
-    }
+            /* FILTER SECTION */
+            #filter-section {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 10px 12px !important;
+                padding: 8px 0 4px !important;
+            }
 
-    /* LIKE / COMMENT BUTTON */
-    .post .btn-link {
-        display: flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        font-size: 12px !important;
-        padding: 4px 6px !important;
-    }
+            #filter-section button,
+            #filter-section a {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                gap: 6px !important;
+                font-size: 12px !important;
+                padding: 6px 8px !important;
+                border-radius: 10px !important;
+            }
 
-    .post .btn-link i {
-        font-size: 16px !important;
-        line-height: 1 !important;
-        display: flex;
-        align-items: center;
-    }
+            #filter-section i {
+                font-size: 16px !important;
+            }
+            
+            #filter-section a {
+                justify-content: flex-start !important;
+                padding-left: 8px !important;
+            }
+            
+            /* LIKE + COMMENT WRAPPER */
+            .post .d-flex.justify-content-around {
+                justify-content: space-evenly !important;
+                padding: 6px 0 !important;
+            }
 
-    .post .btn-link span {
-        line-height: 1 !important;
-        display: flex;
-        align-items: center;
-    }
-.post .bi-heart,
-    .post .bi-chat-dots {
-        font-size: 16px;
-        position: relative;
-        top:5px;
-        line-height: 1;
-        vertical-align: middle;
-        display: inline-block;
-    }
-.post .btn-link {
-    text-decoration: none !important;
-    border: none !important;
-    box-shadow: none !important;
-    outline: none !important;
-}
+            /* LIKE / COMMENT BUTTON */
+            .post .btn-link {
+                display: flex !important;
+                align-items: center !important;
+                gap: 6px !important;
+                font-size: 12px !important;
+                padding: 4px 6px !important;
+            }
 
-.post .btn-link:focus,
-.post .btn-link:active,
-.post .btn-link:focus-visible {
-    outline: none !important;
-    box-shadow: none !important;
-    border: none !important;
-}
-}
+            .post .btn-link i {
+                font-size: 16px !important;
+                line-height: 1 !important;
+                display: flex;
+                align-items: center;
+            }
 
+            .post .btn-link span {
+                line-height: 1 !important;
+                display: flex;
+                align-items: center;
+            }
+            
+            .post .bi-heart,
+            .post .bi-chat-dots {
+                font-size: 16px;
+                position: relative;
+                top: 5px;
+                line-height: 1;
+                vertical-align: middle;
+                display: inline-block;
+            }
+            
+            .post .btn-link {
+                text-decoration: none !important;
+                border: none !important;
+                box-shadow: none !important;
+                outline: none !important;
+            }
+
+            .post .btn-link:focus,
+            .post .btn-link:active,
+            .post .btn-link:focus-visible {
+                outline: none !important;
+                box-shadow: none !important;
+                border: none !important;
+            }
+        }
     </style>
+    
     <div class="min-h-screen flex">
         <div class="post-container" style="max-width:70%; margin-left:130px; display:flex; flex-direction:column; gap:5px;">
 
@@ -362,42 +397,39 @@
                 style="background-color:#292D37; border-radius:5px; position: relative; margin-bottom: 10px;">
 
                 <div class="d-flex align-items-start mb-3">
-    <img
-        src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('assets/usericon.png') }}"
-        alt="Profile"
-        class="rounded-circle me-3 mt-1"
-        style="width:50px; height:50px; object-fit:cover; background:#333; cursor:pointer;"
-        onclick="window.location.href='{{ route('profile.show', auth()->user()->id) }}'">
+                    <img
+                        src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('assets/usericon.png') }}"
+                        alt="Profile"
+                        class="rounded-circle me-3 mt-1"
+                        style="width:50px; height:50px; object-fit:cover; background:#333; cursor:pointer;"
+                        onclick="window.location.href='{{ route('profile.show', auth()->user()->id) }}'">
 
                     <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="w-100">
                         @csrf
 
                         <div class="d-flex align-items-center w-100 gap-3">
-
                             <!-- POSTING PAGE -->
                             <div onclick="window.location.href='{{ route('posting.page') }}'"
-                                style="flex:1; padding:13px 14px; background:#1B1E25;
-                                                                                                                                                                                                                                                                                                                                                border-radius:12px; color:#adb5bd; min-height:55px;
-                                                                                                                                                                                                                                                                                                                                                border:none; outline:none; resize:none; cursor:pointer;">
+                                style="flex:1; padding:13px 14px; background:#1B1E25; border-radius:12px; color:#adb5bd; min-height:55px; border:none; outline:none; resize:none; cursor:pointer;">
                                 What's on your mind?
                             </div>
-
                             <!-- IMAGE REDIRECT -->
                             <div id="photoBtn" class="text-white d-flex align-items-center justify-content-center"
                                 style="cursor:pointer; width:53px; height:55px; background:#1B1E25; border-radius:12px;">
                                 <i class="bi bi-image" style="font-size:26px;"></i>
                             </div>
-
                         </div>
 
                         <!-- HIDDEN REAL TEXTAREA -->
                         <textarea name="content" id="post-content" style="display:none;"></textarea>
-
                         <!-- POST PAGE -->
                         <input type="file" name="image" id="post-image" accept="image/*" style="display:none;">
 
+                        <!-- HIDDEN FILTER INPUTS -->
+                        <input type="hidden" name="filter_age" id="filter-age-input">
+                        <input type="hidden" name="filter_breed" id="filter-breed-input">
+                        <input type="hidden" name="filter_audience" id="filter-audience-input">
                     </form>
-
                 </div>
 
                 <!-- Filters -->
@@ -430,24 +462,18 @@
                         </button>
                     </div>
                 </div>
-
             </section>
 
-            <!--     POSTS LOOP   -->
+            <!-- POSTS LOOP -->
             @foreach ($posts as $post)
-
                 <div class="post mb-4" data-interest="{{ $post->interest }}"
                     style=" background-color:#292D37; border-radius:8px; overflow:hidden; max-width:800px;">
-
                     {{-- POST HEADER (User Info) --}}
                     <div class="p-3 d-flex align-items-center gap-3 border-bottom" style="border-color:#1B1E25;">
-
                         <a href="{{ route('profile.show', $post->user->id) }}"
                             class="d-flex align-items-center gap-3 text-decoration-none">
-
                             <img src="{{ $post->user->avatar ? asset('storage/' . $post->user->avatar) : asset('assets/usericon.png') }}"
                                 class="rounded-circle" style="width:40px; height:40px; object-fit:cover;">
-
                             <div>
                                 <h6 class=" text-white mb-0" style="font-size:14px;">
                                     {{ $post->user->pet_name ?? 'Unknown User' }}
@@ -456,24 +482,19 @@
                                     {{ $post->created_at->diffForHumans() }}
                                 </small>
                             </div>
-
                         </a>
-
                         <div class="ms-auto position-relative">
                             <button class="btn btn-link text-white p-0" onclick="toggleMenu({{ $post->id }})"
                                 style="border: none; background: none;">
                                 <i class=" bi bi-three-dots-vertical fs-5"></i>
                             </button>
-
                             <div id="menu-{{ $post->id }}" class="dropdown-menu-custom"
                                 style="position:absolute; right:0; top:30px; display:none;">
-
                                 @if($post->user_id === auth()->id())
                                     <!-- EDIT -->
                                     <a href="{{ route('posts.edit', $post->id) }}" class=" dropdown-item-custom">
                                         <i class="bi bi-pencil me-2"></i>Edit
                                     </a>
-
                                     <!-- DELETE -->
                                     <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="margin: 0;">
                                         @csrf
@@ -484,12 +505,12 @@
                                     </form>
                                 @else
                                     <!-- REPORT -->
-                                    <form action="{{ route('posts.report', $post->id) }}" method="POST" style="margin: 0;"> @csrf
+                                    <form action="{{ route('posts.report', $post->id) }}" method="POST" style="margin: 0;"> 
+                                        @csrf
                                         <button type="submit" class="dropdown-item-custom" style="border: none;">
                                             <i class="bi bi-flag me-2"></i>Report
                                         </button>
                                     </form>
-
                                     <!-- BLOCK/UNBLOCK -->
                                     @if(auth()->user()->hasBlocked($post->user_id))
                                         <button type="button" class="dropdown-item-custom" onclick="unblockUser({{ $post->user_id }})"
@@ -505,30 +526,23 @@
                                 @endif
                             </div>
                         </div>
-
                     </div>
-
                     {{-- MESSAGE --}}
                     @if($post->message)
                         <div class="p-3">
                             <p class="text-white mb-0" style="font-size:14px; line-height:1.5;">{{ $post->message }}</p>
                         </div>
                     @endif
-
                     {{-- PHOTO --}}
                     @if($post->photo)
                         <div class="w-100"
                             style="background-color:#1B1E25; max-height:450px; overflow:hidden; display:flex; align-items:center; justify-content:center;">
-                            <img src="{{ asset('storage/' . $post->photo) }}" style="width:100%; height:auto; max-height:450px;
-                                                                                        object-fit:cover; display:block;">
+                            <img src="{{ asset('storage/' . $post->photo) }}" style="width:100%; height:auto; max-height:450px; object-fit:cover; display:block;">
                         </div>
                     @endif
-
-                    {{-- TAGS (AGE / BREED / LOCATION / INTEREST / AUDIENCE) --}}
-                    @if($post->city || $post->age || $post->breed || $post->interest)
-
+                    {{-- TAGS (AGE / BREED / AUDIENCE / LOCATION / INTEREST) --}}
+                    @if($post->city || $post->age || $post->breed || $post->interest || $post->audience)
                         <div class="p-3 d-flex flex-wrap gap-2">
-
                             {{-- LOCATION (BLUE) --}}
                             @if($post->city && $post->province)
                                 <span class="badge text-white d-flex align-items-center gap-1"
@@ -537,7 +551,6 @@
                                     {{ $post->city }}, {{ $post->province }}
                                 </span>
                             @endif
-
                             {{-- AGE (YELLOW) --}}
                             @if($post->age)
                                 <span class="badge text-white d-flex align-items-center gap-1"
@@ -546,7 +559,7 @@
                                     Age: {{ $post->age }}
                                 </span>
                             @endif
-
+                            {{-- BREED (ORANGE) --}}
                             @if($post->breed)
                                 <span class="badge text-white d-flex align-items-center gap-1"
                                     style="background-color:#1B1E25; font-size:11px; padding:6px 12px; border-radius:20px; font-weight:normal;">
@@ -554,24 +567,26 @@
                                     Breed: {{ $post->breed }}
                                 </span>
                             @endif
-
+                            {{-- AUDIENCE (PURPLE) --}}
+                            @if($post->audience)
+                                <span class="badge text-white d-flex align-items-center gap-1"
+                                    style="background-color:#1B1E25; font-size:11px; padding:6px 12px; border-radius:20px; font-weight:normal;">
+                                    <i class="bi bi-people" style="color:#a78bfa;"></i>
+                                    Audience: {{ ucfirst($post->audience) }}
+                                </span>
+                            @endif
                             {{-- INTEREST (RED HEART) --}}
                             @if($post->interest)
                                 <span class="badge text-white d-flex align-items-center gap-1"
-                                    style="background-color:#1B1E25;
-                                                                                                                    font-size:11px; padding:6px 12px; border-radius:20px; font-weight:normal;">
+                                    style="background-color:#1B1E25; font-size:11px; padding:6px 12px; border-radius:20px; font-weight:normal;">
                                     <i class="bi bi-heart" style="color:#ff4d6d;"></i>
                                     {{ $post->interest }}
                                 </span>
                             @endif
-
                         </div>
                     @endif
-
-
                     {{-- ACTION BUTTONS --}}
                     <div class="d-flex justify-content-around border-top p-2" style="border-color:#1B1E25;">
-
                         {{-- LIKE BUTTON --}}
                         <form action="{{ route('posts.like', $post->id) }}" method="POST" class="d-inline">
                             @csrf
@@ -581,9 +596,7 @@
                                 <i class="bi bi-heart" style="font-size:18px;"></i>
                                 <span>{{ $post->likes_count }} Like{{ $post->likes_count != 1 ? 's' : '' }}</span>
                             </button>
-
                         </form>
-
                         {{-- COMMENT BUTTON --}}
                         <a href="{{ route('comments.index', $post->id) }}"
                             class="btn btn-link text-white d-flex align-items-center gap-2"
@@ -591,11 +604,8 @@
                             <i class="bi bi-chat-dots" style="font-size:18px;"></i>
                             <span>{{ $post->comments_count }} Comment{{ $post->comments_count != 1 ? 's' : '' }}</span>
                         </a>
-
                     </div>
-
                 </div>
-
             @endforeach
 
         </div>
@@ -717,14 +727,11 @@
                             </div>
                         </div>
                     @empty
-                        <p style="color: #8b95a5; font-size: 0.875rem; text-align: center; margin: 0; padding: 16px 0;">No contacts
-                            yet</p>
+                        <p style="color: #8b95a5; font-size: 0.875rem; text-align: center; margin: 0; padding: 16px 0;">No contacts yet</p>
                     @endforelse
                 </div>
             </div>
-
         @endsection
-
     </div>
 
     <!-- Age Selection Modal -->
@@ -739,27 +746,16 @@
     <!-- Breed Selection Modal -->
     <div id="breedModal" class="modal-container" style="display:none;">
         <div class="modal-content-custom position-relative">
-            <button class="position-absolute top-0 end-0 m-2 btn-close btn-close-white"
-                onclick="closeBreedModal()"></button>
+            <button class="position-absolute top-0 end-0 m-2 btn-close btn-close-white" onclick="closeBreedModal()"></button>
             <h5>Select Breed</h5>
             <ul id="breedList"></ul>
-        </div>
-    </div>
-
-    <!-- City Selection Modal -->
-    <div id="cityModal" class="modal-container" style="display:none;">
-        <div class="modal-content-custom position-relative">
-            <button class="position-absolute top-0 end-0 m-2 btn-close btn-close-white" onclick="closeCityModal()"></button>
-            <h5 id="modal-title">Select City</h5>
-            <ul id="cityList"></ul>
         </div>
     </div>
 
     <!-- Audience Selection Modal -->
     <div id="audienceModal" class="modal-container" style="display:none;">
         <div class="modal-content-custom position-relative">
-            <button class="position-absolute top-0 end-0 m-2 btn-close btn-close-white"
-                onclick="closeAudienceModal()"></button>
+            <button class="position-absolute top-0 end-0 m-2 btn-close btn-close-white" onclick="closeAudienceModal()"></button>
             <h5>Select Audience</h5>
             <ul id="audienceList"></ul>
         </div>
@@ -767,180 +763,143 @@
 
     @push('scripts')
         <script>
-            const locationData = {
-                "Pampanga": ["Angeles City", "Mabalacat City", "San Fernando City", "Mexico", "Bacolor", "Guagua", "Porac", "Santa Rita", "Magalang"],
-                "Cavite": ["Bacoor City", "Imus City", "Dasmariñas City", "Tagaytay City", "General Trias", "Trece Martires City", "Kawit", "Rosario", "Silang", "Tanza"],
-                "Laguna": ["Calamba City", "Santa Rosa City", "Biñan City", "San Pedro City", "Cabuyao City", "San Pablo City", "Los Baños", "Pagsanjan", "Sta. Cruz", "Bay"]
-            };
+            // DEFINE AGES AND BREEDS ARRAYS
+            const ages = [
+                { value: 1, label: '1 year old' },
+                { value: 2, label: '2 years old' },
+                { value: 3, label: '3 years old' },
+                { value: 4, label: '4 years old' },
+                { value: 5, label: '5 years old' }
+            ];
+            
+            const breeds = [
+                'Shih Tzu',
+                'Golden Retriever',
+                'Labrador',
+                'Beagle',
+                'Poodle'
+            ];
 
-            const ages = [1, 2, 3, 4, 5];
-            const breeds = ["Labrador", "Golden Retriever", "Pug", "Shih Tzu", "Pomeranian"];
-
-            let selectedProvince = localStorage.getItem('selectedProvince') || '';
-            let selectedCity = localStorage.getItem('selectedCity') || '';
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const provinceParam = urlParams.get('province');
-            const cityParam = urlParams.get('city');
-
-            if (provinceParam) {
-                selectedProvince = provinceParam.split(' (')[0];
-                localStorage.setItem('selectedProvince', selectedProvince);
-            }
-
-            if (cityParam) {
-                selectedCity = cityParam;
-                localStorage.setItem('selectedCity', cityParam);
-            }
-
-            function updateLocationText() {
-                const locationText = document.getElementById('location-text');
-                locationText.textContent = 'Location';
-            }
-
-            function showCityModal() {
-                if (!selectedProvince) {
-                    window.location.href = '/location';
-                    return;
-                }
-
-                const modal = document.getElementById('cityModal');
-                const cityList = document.getElementById('cityList');
-                const modalTitle = document.getElementById('modal-title');
-
-                modalTitle.textContent = `Select City in ${selectedProvince}`;
-                cityList.innerHTML = '';
-
-                const cities = locationData[selectedProvince] || [];
-
-                cities.forEach(city => {
-                    const li = document.createElement('li');
-                    li.textContent = city;
-                    li.onclick = () => {
-                        selectedCity = city;
-                        localStorage.setItem('selectedCity', city);
-                        updateLocationText();
-                        closeCityModal();
-                        window.location.href = `/home?province=${encodeURIComponent(selectedProvince)}&city=${encodeURIComponent(selectedCity)}`;
-                    };
-                    cityList.appendChild(li);
-                });
-
-                modal.style.display = 'flex';
-            }
-
-            function closeCityModal() {
-                document.getElementById('cityModal').style.display = 'none';
-            }
-
+            // AGE MODAL FUNCTIONS
             function showAgeModal() {
-                const modal = document.getElementById('ageModal');
                 const ageList = document.getElementById('ageList');
-
                 ageList.innerHTML = '';
-
-                ages.forEach(age => {
+                // Add "All Ages" option
+                const allLi = document.createElement('li');
+                allLi.textContent = 'All Ages';
+                allLi.onclick = () => selectAge('');
+                ageList.appendChild(allLi);
+                ages.forEach(ageObj => {
                     const li = document.createElement('li');
-                    li.textContent = age + " year(s)";
-                    li.onclick = () => {
-                        closeAgeModal();
-                        window.location.href = `/home?age=${age}`;
-                    };
+                    li.textContent = ageObj.label;
+                    li.onclick = () => selectAge(ageObj.value);
                     ageList.appendChild(li);
                 });
-
-                modal.style.display = 'flex';
+                document.getElementById('ageModal').style.display = 'flex';
             }
-
+            
             function closeAgeModal() {
                 document.getElementById('ageModal').style.display = 'none';
             }
+            
+            function selectAge(age) {
+                closeAgeModal();
+                filterPosts('age', age);
+            }
 
+            // BREED MODAL FUNCTIONS
             function showBreedModal() {
-                const modal = document.getElementById('breedModal');
                 const breedList = document.getElementById('breedList');
-
                 breedList.innerHTML = '';
-
+                
+                // Add "All Breeds" option
+                const allLi = document.createElement('li');
+                allLi.textContent = 'All Breeds';
+                allLi.onclick = () => selectBreed('');
+                breedList.appendChild(allLi);
+                
                 breeds.forEach(breed => {
                     const li = document.createElement('li');
                     li.textContent = breed;
-                    li.onclick = () => {
-                        closeBreedModal();
-                        window.location.href = `/home?breed=${encodeURIComponent(breed)}`;
-                    };
+                    li.onclick = () => selectBreed(breed);
                     breedList.appendChild(li);
                 });
-
-                modal.style.display = 'flex';
+                document.getElementById('breedModal').style.display = 'flex';
             }
-
+            
             function closeBreedModal() {
                 document.getElementById('breedModal').style.display = 'none';
             }
-
-            function showAudienceModal() {
-                const modal = document.getElementById('audienceModal');
-                const audienceList = document.getElementById('audienceList');
-
-                audienceList.innerHTML = '';
-
-                const audiences = [
-                    { value: 'public', label: 'Public Posts' },
-                    { value: 'friends', label: 'Friends Only' }
-                ];
-
-                audiences.forEach(audience => {
-                    const li = document.createElement('li');
-                    li.textContent = audience.label;
-                    li.onclick = () => {
-                        closeAudienceModal();
-                        window.location.href = `/home?audience=${audience.value}`;
-                    };
-                    audienceList.appendChild(li);
-                });
-
-                modal.style.display = 'flex';
+            
+            function selectBreed(breed) {
+                closeBreedModal();
+                filterPosts('breed', breed);
             }
 
+            // AUDIENCE MODAL FUNCTIONS
+            function showAudienceModal() {
+                const audienceList = document.getElementById('audienceList');
+                audienceList.innerHTML = '';
+                
+                // Add "All" option
+                const allLi = document.createElement('li');
+                allLi.textContent = 'All';
+                allLi.onclick = () => selectAudience('');
+                audienceList.appendChild(allLi);
+                
+                const audiences = ['Public', 'Friends Only'];
+                audiences.forEach(audience => {
+                    const li = document.createElement('li');
+                    li.textContent = audience;
+                    li.onclick = () => selectAudience(audience);
+                    audienceList.appendChild(li);
+                });
+                document.getElementById('audienceModal').style.display = 'flex';
+            }
+            
             function closeAudienceModal() {
                 document.getElementById('audienceModal').style.display = 'none';
             }
-
-            updateLocationText();
-
-            // Toggle menu for post options (Delete, Report, Block)
-            function toggleMenu(postId) {
-                const menu = document.getElementById('menu-' + postId);
-                const allMenus = document.querySelectorAll('.dropdown-menu-custom');
-
-                allMenus.forEach(m => {
-                    if (m.id !== 'menu-' + postId) {
-                        m.style.display = 'none';
-                    }
-                });
-
-                menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+            
+            function selectAudience(audience) {
+                closeAudienceModal();
+                filterPosts('audience', audience);
             }
 
-            // Close menus when clicking outside
-            document.addEventListener('click', function (e) {
-                if (!e.target.closest('.dropdown-menu-custom') && !e.target.closest('button[onclick^="toggleMenu"]')) {
-                    document.querySelectorAll('.dropdown-menu-custom').forEach(menu => {
-                        menu.style.display = 'none';
-                    });
-                }
-            });
+            // FILTER POSTS FUNCTION
+            let currentFilters = {
+                age: '',
+                breed: '',
+                audience: ''
+            };
 
-            // Image upload redirect to posting page
-            document.addEventListener('DOMContentLoaded', function () {
-                const photoBtn = document.getElementById('photoBtn');
-                const imageInput = document.getElementById('post-image');
+            function filterPosts(filterType, value) {
+                // Map filterType to backend param
+                let paramMap = {
+                    age: 'filter_age',
+                    breed: 'filter_breed',
+                    audience: 'filter_audience'
+                };
+                const urlParams = new URLSearchParams(window.location.search);
+                urlParams.set(paramMap[filterType], value);
+                // Remove empty filters
+                if (!value) urlParams.delete(paramMap[filterType]);
+                window.location.href = window.location.pathname + '?' + urlParams.toString();
+            }
 
-                if (!photoBtn || !imageInput) {
-                    console.error("photoBtn or post-image NOT FOUND");
-                    return;
-                }
+            // PHOTO BUTTON FUNCTIONALITY
+            const photoBtn = document.getElementById('photoBtn');
+            const imageInput = document.getElementById('post-image');
+
+            if (!photoBtn || !imageInput) {
+                console.error("photoBtn or post-image NOT FOUND");
+            } else {
+                // Add loading indicator
+                let postLoading = document.createElement('div');
+                postLoading.id = 'post-upload-loading';
+                postLoading.style = 'display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:9999;justify-content:center;align-items:center;';
+                postLoading.innerHTML = '<div style="color:white;font-size:1.2rem;"><span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span> Uploading...</div>';
+                document.body.appendChild(postLoading);
 
                 photoBtn.addEventListener('click', function () {
                     imageInput.click();
@@ -949,6 +908,10 @@
                 imageInput.addEventListener('change', function (event) {
                     const file = event.target.files[0];
                     if (!file) return;
+
+                    // Show loading
+                    postLoading.style.display = 'flex';
+                    photoBtn.disabled = true;
 
                     let form = new FormData();
                     form.append("image", file);
@@ -960,75 +923,39 @@
                             "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
                         }
                     })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                window.location.href = "{{ route('posting.page') }}";
-                            } else {
-                                console.error("Failed to store session");
-                            }
-                        })
-                        .catch(err => console.error(err));
+                    .then(res => res.json())
+                    .then(data => {
+                        postLoading.style.display = 'none';
+                        photoBtn.disabled = false;
+                        if (data.success) {
+                            window.location.href = "{{ route('posting.page') }}";
+                        } else {
+                            console.error("Failed to store session");
+                        }
+                    })
+                    .catch(err => {
+                        postLoading.style.display = 'none';
+                        photoBtn.disabled = false;
+                        console.error(err);
+                    });
                 });
-            });
-
-            // Message request functionality
-            function sendMessageRequest(userId, userName) {
-                // Create modal for message composition
-                const modal = document.createElement('div');
-                modal.style.cssText = `
-                                                                                                                                                                                                                                                                                                                                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                                                                                                                                                                                                                                                                                                                                background-color: rgba(0,0,0,0.8); display: flex; align-items: center;
-                                                                                                                                                                                                                                                                                                                                justify-content: center; z-index: 9999; animation: fadeIn 0.2s ease;
-                                                                                                                                                                                                                                                                                                                            `;
-
-                modal.innerHTML = `
-                                                                                                                                                                                                                                                                                                                                <div style="
-                                                                                                                                                                                                                                                                                                                                    background: linear-gradient(145deg, #2a2e38, #252933);
-                                                                                                                                                                                                                                                                                                                                    border-radius: 16px; padding: 28px; width: 90%; max-width: 420px;
-                                                                                                                                                                                                                                                                                                                                    position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-                                                                                                                                                                                                                                                                                                                                    animation: slideUp 0.3s ease;
-                                                                                                                                                                                                                                                                                                                                ">
-                                                                                                                                                                                                                                                                                                                                    <button onclick="this.closest('div').parentElement.remove()"
-                                                                                                                                                                                                                                                                                                                                        style="
-                                                                                                                                                                                                                                                                                                                                            position: absolute; right: 20px; top: 20px; background: none;
-                                                                                                                                                                                                                                                                                                                                            border: none; color: #8b95a5; font-size: 24px; cursor: pointer;
-                                                                                                                                                                                                                                                                                                                                        ">×</button>
-                                                                                                                                                                                                                                                                                                                                    <h5 style="color: white; margin-bottom: 20px; font-size: 20px; font-weight: 600;">
-                                                                                                                                                                                                                                                                                                                                        Send Message to ${userName}
-                                                                                                                                                                                                                                                                                                                                    </h5>
-                                                                                                                                                                                                                                                                                                                                    <form id="messageRequestForm">
-                                                                                                                                                                                                                                                                                                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                                                                                                                                                                                                                                                                                        <input type="hidden" name="receiver_id" value="${userId}">
-                                                                                                                                                                                                                                                                                                                                        <textarea name="message" placeholder="Write your message..."
-                                                                                                                                                                                                                                                                                                                                            style="
-                                                                                                                                                                                                                                                                                                                                                width: 100%; min-height: 100px; background-color: #1e2230;
-                                                                                                                                                                                                                                                                                                                                                border: 1px solid #3a3f52; color: #fff; padding: 12px 16px;
-                                                                                                                                                                                                                                                                                                                                                border-radius: 8px; font-size: 14px; resize: vertical;
-                                                                                                                                                                                                                                                                                                                                                outline: none;
-                                                                                                                                                                                                                                                                                                                                            " required></textarea>
-                                                                                                                                                                                                                                                                                                                                        <div style="display: flex; gap: 10px; margin-top: 20px;">
-                                                                                                                                                                                                                                                                                                                                            <button type="button" onclick="this.closest('div').parentElement.remove()"
-                                                                                                                                                                                                                                                                                                                                                style="
-                                                                                                                                                                                                                                                                                                                                                    flex: 1; background: #6b7280; color: white; border: none;
-                                                                                                                                                                                                                                                                                                                                                    padding: 12px; border-radius: 8px; cursor: pointer;
-                                                                                                                                                                                                                                                                                                                                                ">Cancel</button>
-                                                                                                                                                                                                                                                                                                                                            <button type="submit"
-                                                                                                                                                                                                                                                                                                                                                style="
-                                                                                                                                                                                                                                                                                                                                                    flex: 1; background: #3b82f6; color: white; border: none;
-                                                                                                                                                                                                                                                                                                                                                    padding: 12px; border-radius: 8px; cursor: pointer;
-                                                                                                                                                                                                                                                                                                                                                ">Send Request</button>
-                                                                                                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                                                                                                    </form>
-                                                                                                                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                                                                                                            `;
-
-                document.body.appendChild(modal);
-
-
             }
 
-            // Contact menu functions
+            // POST MENU TOGGLE
+            function toggleMenu(postId) {
+                const menu = document.getElementById(`menu-${postId}`);
+                
+                // Close all other menus
+                document.querySelectorAll('.dropdown-menu-custom').forEach(dropdown => {
+                    if (dropdown.id !== `menu-${postId}`) {
+                        dropdown.style.display = 'none';
+                    }
+                });
+
+                menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+            }
+
+            // CONTACT MENU FUNCTIONS
             function toggleContactMenu(event, friendId) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -1049,9 +976,7 @@
                     const form = document.createElement('form');
                     form.method = 'POST';
                     form.action = `/friend/unfriend/${userId}`;
-                    form.innerHTML = `
-                                                                                                                                                                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                                                                                                                                            `;
+                    form.innerHTML = `<input type="hidden" name="_token" value="{{ csrf_token() }}">`;
                     document.body.appendChild(form);
                     form.submit();
                 }
@@ -1062,9 +987,7 @@
                     const form = document.createElement('form');
                     form.method = 'POST';
                     form.action = `/posts/${userId}/block`;
-                    form.innerHTML = `
-                                                                                                                                                                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                                                                                                                                            `;
+                    form.innerHTML = `<input type="hidden" name="_token" value="{{ csrf_token() }}">`;
                     document.body.appendChild(form);
                     form.submit();
                 }
@@ -1075,23 +998,50 @@
                     const form = document.createElement('form');
                     form.method = 'POST';
                     form.action = `/posts/${userId}/unblock`;
-                    form.innerHTML = `
-                                                                                                                                                                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                                                                                                                                            `;
+                    form.innerHTML = `<input type="hidden" name="_token" value="{{ csrf_token() }}">`;
                     document.body.appendChild(form);
                     form.submit();
                 }
             }
 
-            // Close contact dropdown when clicking outside
+            // Close dropdowns when clicking outside
             document.addEventListener('click', function (event) {
-                if (!event.target.closest('.contact-item-wrapper')) {
+                if (!event.target.closest('.contact-item-wrapper') && !event.target.closest('[onclick^="toggleMenu"]')) {
                     document.querySelectorAll('.contact-dropdown.show').forEach(dropdown => {
                         dropdown.classList.remove('show');
+                    });
+                    document.querySelectorAll('.dropdown-menu-custom').forEach(dropdown => {
+                        dropdown.style.display = 'none';
                     });
                 }
             });
         </script>
+    @endpush
+    @push('scripts')
+    <script>
+        // Real-time update using Laravel Echo
+        if (window.Echo) {
+            window.Echo.channel('posts')
+                .listen('PostCreated', (e) => {
+                    // Force full page reload for all users on new post
+                    window.location.reload();
+                });
+        } else {
+            // Fallback: Poll every 5 seconds for new posts
+            let lastPostId = null;
+            function checkNewPosts() {
+                const firstPost = document.querySelector('.post[data-interest]');
+                if (!firstPost) return;
+                const currentId = firstPost.getAttribute('data-interest');
+                if (lastPostId === null) {
+                    lastPostId = currentId;
+                } else if (currentId !== lastPostId) {
+                    window.location.reload();
+                }
+            }
+            setInterval(checkNewPosts, 5000);
+        }
+    </script>
     @endpush
 
 @endsection

@@ -13,8 +13,9 @@ return new class extends Migration
     public function up(): void
     {
         // Drop the existing check constraint
-        DB::statement("ALTER TABLE notifications DROP CONSTRAINT notifications_type_check");
-        
+        DB::statement("ALTER TABLE notifications DROP CONSTRAINT IF EXISTS notifications_type_check");
+        // Normalize any existing types to allowed set before enforcing the constraint.
+        DB::statement("UPDATE notifications SET type = 'message' WHERE type IS NULL OR type NOT IN ('like', 'friend_request', 'message', 'connect', 'comment')");
         // Add the new check constraint with 'comment' type included
         DB::statement("ALTER TABLE notifications ADD CONSTRAINT notifications_type_check CHECK (type IN ('like', 'friend_request', 'message', 'connect', 'comment'))");
     }
@@ -25,7 +26,9 @@ return new class extends Migration
     public function down(): void
     {
         // Revert to original constraint
-        DB::statement("ALTER TABLE notifications DROP CONSTRAINT notifications_type_check");
+        DB::statement("ALTER TABLE notifications DROP CONSTRAINT IF EXISTS notifications_type_check");
+        // Normalize any rows that would violate the older constraint (without 'comment')
+        DB::statement("UPDATE notifications SET type = 'message' WHERE type IS NULL OR type NOT IN ('like', 'friend_request', 'message', 'connect')");
         DB::statement("ALTER TABLE notifications ADD CONSTRAINT notifications_type_check CHECK (type IN ('like', 'friend_request', 'message', 'connect'))");
     }
 };
