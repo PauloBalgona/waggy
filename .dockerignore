@@ -7,5 +7,3 @@ vendor
 storage/logs
 storage/framework
 npm-debug.log
-Dockerfile
-docker-compose.yml
