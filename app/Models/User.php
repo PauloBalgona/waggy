@@ -21,9 +21,13 @@ class User extends Authenticatable
         'pet_features',
         'certificate_verified',
         'certificate_path',
+        'certificate_rejected_at',
         'avatar',
         'city',
-        'province'
+        'province',
+        'is_admin',
+        'admin_role',
+        'email_verified_at'
     ];
 
     protected $hidden = [
@@ -64,6 +68,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(Notification::class);
     }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
+
     public function sentFriendRequests()
     {
         return $this->hasMany(FriendRequest::class, 'sender_id');
@@ -76,18 +91,60 @@ class User extends Authenticatable
 
     public function friends()
     {
-        return User::where(function ($query) {
-            $query->where('friend_requests.sender_id', $this->id)
-                ->where('friend_requests.receiver_id', '!=', $this->id)
-                ->where('friend_requests.status', 'accepted');
-        })->orWhere(function ($query) {
-            $query->where('friend_requests.receiver_id', $this->id)
-                ->where('friend_requests.sender_id', '!=', $this->id)
-                ->where('friend_requests.status', 'accepted');
-        })->join('friend_requests', function ($join) {
+        return User::join('friend_requests', function ($join) {
             $join->on('users.id', '=', 'friend_requests.sender_id')
                 ->orOn('users.id', '=', 'friend_requests.receiver_id');
-        })->where('users.id', '!=', $this->id)->select('users.*')->distinct();
+        })
+            ->where(function ($query) {
+                $query->where('friend_requests.sender_id', $this->id)
+                    ->orWhere('friend_requests.receiver_id', $this->id);
+            })
+            ->where('friend_requests.status', 'accepted')
+            ->where('users.id', '!=', $this->id)
+            ->select('users.*')
+            ->distinct();
+    }
+
+    public function blockedUsers()
+    {
+        return $this->hasMany(Block::class, 'user_id', 'id')
+            ->with('blockedUser');
+    }
+
+    public function blockedByUsers()
+    {
+        return $this->hasMany(Block::class, 'blocked_user_id', 'id')
+            ->with('user');
+    }
+
+    public function isBlockedBy($userId)
+    {
+        return Block::where('user_id', $userId)
+            ->where('blocked_user_id', $this->id)
+            ->exists();
+    }
+
+    public function hasBlocked($userId)
+    {
+        return Block::where('user_id', $this->id)
+            ->where('blocked_user_id', $userId)
+            ->exists();
+    }
+
+    /**
+     * Check if user is a super admin
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->is_admin && $this->admin_role === 'super_admin';
+    }
+
+    /**
+     * Check if user is an admin (including super admin)
+     */
+    public function isAdmin(): bool
+    {
+        return $this->is_admin === true;
     }
 
 

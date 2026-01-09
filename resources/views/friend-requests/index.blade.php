@@ -1,11 +1,21 @@
-@extends('navbar.nav1')
+@extends('navbar.nav')
 @section('title', 'Friend Requests - Waggy')
 @section('body-class', 'bg-gray-900')
 
 @section('content')
+
+<style>
+    @media (max-width: 768px) {
+    .friend-title {
+        position: relative;
+        left:20px; 
+        top: 10px;
+    }
+}
+</style>
     <div class="min-h-screen bg-gray-900 text-white p-8">
         <div class="max-w-4xl mx-auto">
-            <h1 class="text-3xl font-bold mb-6">Friend Requests</h1>
+            <h1 class="text-3xl font-bold mb-6 friend-title">Friend Requests</h1>
 
             @if(session('success'))
                 <div class="bg-green-600 text-white p-3 rounded mb-4">
@@ -25,10 +35,12 @@
                             style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; margin-bottom: 1rem;">
                             <div style="display: flex; align-items: center; gap: 1rem;">
 
+                                {{-- Avatar --}}
                                 <img src="{{ $sender->avatar ? asset('storage/' . $sender->avatar) : asset('assets/usericon.png') }}"
                                     alt="Avatar" class="rounded-full object-cover border"
                                     style="height: 50px; width: 50px; border-radius: 50px; position:relative; margin-top: 8px;">
 
+                                {{-- Name + Breed (stacked vertically) --}}
                                 <div style="display: flex; flex-direction: column;">
                                     <p style="font-size: 1.500rem; font-weight: 700; color: white; margin: 0;">
                                         {{ $sender->pet_name ?? $sender->name }}

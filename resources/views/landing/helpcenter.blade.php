@@ -30,6 +30,33 @@
                 overflow-x: hidden;
                 
             }
+            @media (max-width: 768px) {
+  #footer {
+    text-align: center;
+    padding: 30px 15px !important;
+  }
+
+  #footer .d-flex {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  #footer a {
+    display: inline-block;
+    font-size: 0.85rem;
+  }
+
+  #footer i,
+  #footer svg {
+    font-size: 1.1rem;
+  }
+
+  #footer p {
+    font-size: 0.8rem;
+    margin-top: 15px;
+  }
+}
+
         </style>
         <div id="navbar"></div>
         

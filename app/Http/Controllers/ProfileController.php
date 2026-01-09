@@ -143,4 +143,43 @@ class ProfileController extends Controller
 
         return back()->with('success', 'Unfriended successfully!');
     }
+
+    /**
+     * Get user by ID for API (JSON response)
+     */
+    public function apiGetUser($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        return response()->json([
+            'id' => $user->id,
+            'pet_name' => $user->pet_name,
+            'avatar' => $user->avatar,
+            'pet_breed' => $user->pet_breed,
+            'pet_age' => $user->pet_age,
+        ]);
+    }
+
+    /**
+     * Search users by pet name for API
+     */
+    public function apiSearchUsers()
+    {
+        $query = request()->input('q', '');
+
+        if (strlen($query) < 1) {
+            return response()->json([]);
+        }
+
+        $users = User::where('pet_name', 'ilike', '%' . $query . '%')
+            ->select('id', 'pet_name', 'pet_breed', 'avatar')
+            ->limit(10)
+            ->get();
+
+        return response()->json($users);
+    }
 }

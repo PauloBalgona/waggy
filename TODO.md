@@ -1,0 +1,5 @@
+-   [x] Fix mobile interface for messages: Make sidebar act as inbox, show chat when conversation selected
+-   [x] Add back button functionality in chat view on mobile
+-   [x] Make search bar in sidebar functional for filtering conversations
+-   [x] Update navbar to white background like landing page, ensure settings and logout links work
+-   [x] Adjust navbar colors for white theme

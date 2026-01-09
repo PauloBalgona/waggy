@@ -18,31 +18,210 @@
 
 
   <style>
-    body {
-      font-family: "Montserrat", sans-serif;
-      overflow-x: hidden;
-    }
+body {
+  font-family: "Montserrat", sans-serif;
+  overflow-x: hidden;
+}
 
+.hero-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
 
-    .hero-bg {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 1;
-    }
+.hero-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: 2;
+}
 
-    .hero-overlay {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.2);
-      z-index: 2;
-    }
+.feature-card,
+.service-card,
+.benefits-card {
+  transition: transform 0.3s ease;
+}
 
-    .feature-card,
-    .service-card,
-    .benefits-card {
-      transition: transform 0.3s ease;
-    }
+@media (max-width: 992px) {
+  section {
+    height: auto !important;
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
+  }
+
+  .hero-bg,
+  .hero-overlay {
+    height: 100vh !important;
+  }
+
+  .col-md-3 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .col-md-6 img {
+    max-width: 100% !important;
+    margin: 30px auto;
+  }
+
+  .d-flex.flex-md-row {
+    flex-direction: column !important;
+  }
+
+  .position-relative.rounded {
+    height: auto !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .d-flex.flex-md-row {
+    position: relative !important;
+    background: none !important;
+  }
+
+  .d-flex.flex-md-row img {
+    width: 100% !important;
+    height: 240px !important;
+    object-fit: cover !important;
+    border-radius: 12px;
+  }
+
+  .d-flex.flex-md-row .p-4 {
+    position: absolute !important;
+    bottom: 40px !important;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.65),
+      rgba(0, 0, 0, 0)
+    );
+    color: #fff !important;
+    padding: 20px !important;
+  }
+
+  .d-flex.flex-md-row h5,
+  .d-flex.flex-md-row p,
+  .d-flex.flex-md-row a {
+    color: #fff !important;
+  }
+
+  .d-flex.flex-md-row a {
+    color: #ff4d4d !important;
+  }
+
+  .position-relative.rounded img {
+    height: 220px !important;
+    object-fit: cover !important;
+  }
+
+  .position-relative .position-absolute {
+    padding: 20px !important;
+  }
+
+  .position-relative h5 {
+    margin-bottom: 6px !important;
+    line-height: 1.3;
+  }
+
+  .position-relative p {
+    margin-bottom: 6px !important;
+    line-height: 1.4;
+  }
+
+  .position-relative a {
+    margin-top: 4px;
+    display: inline-block;
+  }
+
+  .row.g-3,
+  .row.g-4 {
+    row-gap: 20px !important;
+  }
+
+  #footer {
+    text-align: center;
+    padding: 30px 15px !important;
+  }
+
+  img[alt="Dogs"] {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 220px !important;
+    object-fit: cover !important;
+    margin-bottom: 20px;
+  }
+
+  #footer .d-flex {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  #footer a {
+    display: inline-block;
+    font-size: 0.85rem;
+  }
+
+  #footer i,
+  #footer svg {
+    font-size: 1.1rem;
+  }
+
+  #footer p {
+    font-size: 0.8rem;
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  h1 {
+    font-size: 1.4rem !important;
+  }
+
+  h2 {
+    font-size: 1.3rem !important;
+  }
+
+  h3,
+  h5 {
+    font-size: 1rem !important;
+  }
+
+  p {
+    font-size: 0.85rem !important;
+  }
+
+  .btn {
+    font-size: 0.85rem !important;
+    padding: 6px 12px !important;
+  }
+
+  img {
+    max-height: 280px;
+    object-fit: cover;
+  }
+
+  .position-relative .position-absolute {
+    padding: 16px !important;
+    bottom: 55px !important;
+  }
+
+  .position-relative p {
+    font-size: 0.8rem !important;
+  }
+
+  #footer {
+    padding-bottom: 20px !important;
+  }
+
+  img[alt="Dogs"] {
+    max-height: 180px !important;
+  }
+}
+
   </style>
 </head>
 
@@ -63,8 +242,8 @@
         Meet breeders, make friends, and find your perfect furry match — one swipe is all it takes.
       </p>
       <div>
-        <a href="#" class="btn btn-primary px-3 py-1 me-2">Sign Up</a>
-        <a href="#" class="btn btn-outline-dark px-3 py-1">Learn More</a>
+        <a href="/signup" class="btn btn-primary px-3 py-1 me-2">Sign Up</a>
+        <a href="/discover" class="btn btn-outline-dark px-3 py-1">Learn More</a>
       </div>
     </div>
   </section>
@@ -348,7 +527,7 @@
       </div>
 
       <div class="d-flex justify-content-center">
-        <img src="../frontend/assets/img/footer dogs.png" alt="Dogs" class="img-fluid mt-3"
+        <img src="{{ asset('assets/footer dogs.png') }}" alt="Dogs" class="img-fluid mt-3"
           style="width: 100vw; height: 400px; object-fit: cover; display: block; margin: 0; padding: 0;" />
       </div>
     </div>
@@ -360,4 +539,4 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
-</html>
+</html> 

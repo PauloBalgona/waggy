@@ -12,6 +12,7 @@ class Notification extends Model
         'type',
         'message',
         'is_read',
+        'post_id',
     ];
 
     protected function casts(): array
@@ -29,5 +30,10 @@ class Notification extends Model
     public function actor()
     {
         return $this->belongsTo(User::class, 'actor_id');
+    }
+
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
     }
 }

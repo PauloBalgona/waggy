@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\FriendRequest;
 use App\Models\User;
 use App\Models\Notification;
-use App\Models\Friend;
+use App\Events\FriendRequestCreated;
+use App\Events\NotificationCreated;
 use Auth;
 
 class FriendRequestController extends Controller
@@ -46,20 +47,33 @@ class FriendRequestController extends Controller
                 return back()->with('error', 'You are already friends.');
             }
         } else {
-            FriendRequest::create([
+            $friendRequest = FriendRequest::create([
                 'sender_id' => $senderId,
                 'receiver_id' => $receiverId,
                 'status' => 'pending',
             ]);
 
             // Create notification for receiver
-            Notification::create([
+            $notification = Notification::create([
                 'user_id' => $receiverId,
                 'actor_id' => $senderId,
                 'type' => 'friend_request',
                 'message' => Auth::user()->pet_name . ' sent you a friend request',
                 'data' => json_encode(['sender_id' => $senderId]),
             ]);
+
+            // Broadcast friend request and notification in realtime
+            try {
+                event(new FriendRequestCreated($friendRequest));
+            } catch (\Exception $e) {
+                // ignore broadcast failures
+            }
+
+            try {
+                event(new NotificationCreated($notification));
+            } catch (\Exception $e) {
+                // ignore
+            }
 
             return back()->with('success', 'Friend request sent!');
         }
@@ -80,15 +94,6 @@ class FriendRequestController extends Controller
     public function decline(Request $request)
     {
         $friendRequest = FriendRequest::find($request->id);
-
-        // If not found by id, assume id is sender_id from notifications
-        if (!$friendRequest) {
-            $friendRequest = FriendRequest::where('sender_id', $request->id)
-                ->where('receiver_id', Auth::id())
-                ->where('status', 'pending')
-                ->first();
-        }
-
         if ($friendRequest && $friendRequest->receiver_id == Auth::id()) {
             $friendRequest->update(['status' => 'rejected']);
         }

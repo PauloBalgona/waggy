@@ -2,77 +2,102 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
-use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class HomeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(Request $request)
     {
-        // Get all posts
-        $query = Post::with('user')->latest();
+        // Start query - get ALL posts from ALL users
+        $query = Post::with(['user', 'likes'])
+            ->withCount('likes', 'comments', 'replies')
+            ->orderBy('created_at', 'desc');
 
-        // Apply filters if present
-        if ($request->has('province')) {
-            $query->where('province', $request->province);
-            if ($request->has('city')) {
-                $query->where('city', $request->city);
-            }
-        }
+        // Apply filters based on URL parameters
 
-        if ($request->has('age')) {
+        // Filter by age
+        if ($request->has('age') && $request->age != '') {
             $query->where('age', $request->age);
         }
 
-        if ($request->has('breed')) {
+        // Filter by breed
+        if ($request->has('breed') && $request->breed != '') {
             $query->where('breed', $request->breed);
         }
 
-        if ($request->has('audience')) {
-            if ($request->audience === 'public') {
-                $query->where('audience', 'public');
-            } elseif ($request->audience === 'friends') {
-                // Get accepted friends IDs
+        // Filter by city
+        if ($request->has('city') && $request->city != '') {
+            $query->where('city', $request->city);
+        }
+
+        // Filter by province
+        if ($request->has('province') && $request->province != '') {
+            $query->where('province', 'like', '%' . $request->province . '%');
+        }
+
+        // Filter by interest
+        if ($request->has('interest') && $request->interest != '') {
+            $query->where('interest', $request->interest);
+        }
+
+        // Filter by audience/interest
+        if ($request->has('audience') && $request->audience != '') {
+            if ($request->audience === 'friends') {
+                // Get friend IDs of current user using FriendRequest model
                 $friendIds = \App\Models\FriendRequest::where(function ($q) {
                     $q->where('sender_id', auth()->id())
                         ->orWhere('receiver_id', auth()->id());
                 })
                     ->where('status', 'accepted')
                     ->get()
-                    ->map(function ($request) {
-                        return $request->sender_id == auth()->id() ? $request->receiver_id : $request->sender_id;
+                    ->map(function ($friendRequest) {
+                        return $friendRequest->sender_id == auth()->id()
+                            ? $friendRequest->receiver_id
+                            : $friendRequest->sender_id;
                     })
                     ->unique()
                     ->toArray();
 
-                // Show only friends
-                $query->whereIn('user_id', array_merge($friendIds, [auth()->id()]))
-                    ->where('audience', 'friends');
+                $friendIds[] = auth()->id(); // Include own posts
+                $query->whereIn('user_id', $friendIds);
+            } elseif ($request->audience === 'public') {
+                $query->where('audience', 'public');
             }
         }
 
+        // Get blocked users and exclude their posts
+        $blockedUserIds = auth()->user()->blockedUsers()->pluck('blocked_user_id')->toArray();
+        if (!empty($blockedUserIds)) {
+            $query->whereNotIn('user_id', $blockedUserIds);
+        }
+
+        // Also exclude posts from users who have blocked the current user
+        $usersWhoBlockedMe = \App\Models\Block::where('blocked_user_id', auth()->id())->pluck('user_id')->toArray();
+        if (!empty($usersWhoBlockedMe)) {
+            $query->whereNotIn('user_id', $usersWhoBlockedMe);
+        }
+
+        // Get the filtered posts
         $posts = $query->get();
 
-        //accepted friends
-        $friendIds = \App\Models\FriendRequest::where(function ($query) {
-            $query->where('sender_id', auth()->id())
-                ->orWhere('receiver_id', auth()->id());
-        })
-            ->where('status', 'accepted')
-            ->get()
-            ->map(function ($request) {
-                return $request->sender_id == auth()->id() ? $request->receiver_id : $request->sender_id;
-            })
-            ->unique()
-            ->take(10);
+        // Combine comments + replies into a single comments_count value for display
+        foreach ($posts as $p) {
+            $p->comments_count = ($p->comments_count ?? 0) + ($p->replies_count ?? 0);
+        }
 
-        $contacts = User::whereIn('id', $friendIds)->get();
+        // Get friends for the contacts sidebar (exclude blocked users)
+        $blockedUserIds = auth()->user()->blockedUsers()->pluck('blocked_user_id')->toArray();
+        $friends = auth()->user()->friends()
+            ->whereNotIn('users.id', $blockedUserIds)
+            ->get();
 
-        $contacts->each(function ($contact) {
-            $contact->is_online = true;
-        });
-
-        return view('home.index', compact('posts', 'contacts'));
+        return view('home.index', compact('posts', 'friends'));
     }
 }

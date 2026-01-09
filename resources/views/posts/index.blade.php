@@ -3,6 +3,108 @@
 @section('body-class', 'bg-gray-900')
 
 @section('content')
+    <style>
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .d-flex.align-items-center.justify-content-center.min-vh-100.p-3 {
+                padding: 16px 8px !important;
+                min-height: auto !important;
+                padding-top: 20px !important;
+            }
+
+            .position-relative.rounded-3.p-4 {
+                padding: 16px !important;
+                border-radius: 12px !important;
+                max-width: 100% !important;
+            }
+
+            .position-absolute.top-0.start-0 {
+                width: 28px !important;
+                height: 28px !important;
+                font-size: 18px !important;
+            }
+
+            .position-absolute.top-0.end-0 {
+                padding: 8px 12px !important;
+                font-size: 12px !important;
+            }
+
+            label {
+                font-size: 12px !important;
+            }
+
+            #photoPreview {
+                height: 160px !important;
+                max-width: 100% !important;
+            }
+
+            textarea {
+                font-size: 13px !important;
+                padding: 10px 12px !important;
+            }
+
+            .form-select {
+                font-size: 12px !important;
+                padding: 10px 12px !important;
+            }
+
+            .row.g-2 {
+                gap: 8px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .d-flex.align-items-center.justify-content-center.min-vh-100.p-3 {
+                padding: 8px 4px !important;
+                padding-top: 12px !important;
+            }
+
+            .position-relative.rounded-3.p-4 {
+                padding: 12px !important;
+                border-radius: 10px !important;
+            }
+
+            .position-absolute.top-0.start-0 {
+                width: 24px !important;
+                height: 24px !important;
+                font-size: 16px !important;
+            }
+
+            .position-absolute.top-0.end-0 {
+                padding: 6px 10px !important;
+                font-size: 11px !important;
+            }
+
+            label {
+                font-size: 11px !important;
+                margin-bottom: 6px !important;
+            }
+
+            #photoPreview {
+                height: 140px !important;
+            }
+
+            #photoIcon {
+                font-size: 36px !important;
+            }
+
+            textarea {
+                font-size: 12px !important;
+                padding: 8px 10px !important;
+            }
+
+            .form-select {
+                font-size: 11px !important;
+                padding: 8px 10px !important;
+            }
+
+            .row.g-2 {
+                gap: 6px !important;
+                margin-bottom: 10px !important;
+            }
+        }
+    </style>
+
     <div class="d-flex align-items-center justify-content-center min-vh-100 p-3">
         <div class="position-relative rounded-3 p-4" style="background-color: #252938; max-width: 450px; width: 100%;">
 
@@ -20,7 +122,7 @@
                 style="background-color: #4c6ef5; border: none; font-size: 14px; font-weight: 500; z-index: 10;"
                 onclick="submitForm()" onmouseover="this.style.backgroundColor='#5c7cfa'"
                 onmouseout="this.style.backgroundColor='#4c6ef5'">
-                Send
+                Posts
             </button>
 
             {{-- Upload --}}
@@ -47,24 +149,26 @@
                 <div class="row g-2 mb-3">
                     <div class="col-6">
                         <select id="selectAge" class="form-select rounded-2"
-                            style="background-color: #1e2230; border: 1px solid #3a3f52; color: #fff; padding: 12px 16px; font-size: 14px;">
+                            style="background-color: #1e2230; border: 1px solid #3a3f52; color: #fff; padding: 12px 16px; font-size: 14px;"
+                            {{ $userPetAge ? 'disabled' : '' }}>
                             <option value="">Select Age</option>
-                            <option value="1">1 year</option>
-                            <option value="2">2 years</option>
-                            <option value="3">3 years</option>
-                            <option value="4">4 years</option>
-                            <option value="5">5 years</option>
+                            <option value="1" {{ $userPetAge == 1 ? 'selected' : '' }}>1 year</option>
+                            <option value="2" {{ $userPetAge == 2 ? 'selected' : '' }}>2 years</option>
+                            <option value="3" {{ $userPetAge == 3 ? 'selected' : '' }}>3 years</option>
+                            <option value="4" {{ $userPetAge == 4 ? 'selected' : '' }}>4 years</option>
+                            <option value="5" {{ $userPetAge == 5 ? 'selected' : '' }}>5 years</option>
                         </select>
                     </div>
                     <div class="col-6">
                         <select id="selectBreed" class="form-select rounded-2"
-                            style="background-color: #1e2230; border: 1px solid #3a3f52; color: #fff; padding: 12px 16px; font-size: 14px;">
+                            style="background-color: #1e2230; border: 1px solid #3a3f52; color: #fff; padding: 12px 16px; font-size: 14px;"
+                            {{ $userPetBreed ? 'disabled' : '' }}>
                             <option value="">Select Breed</option>
-                            <option value="Labrador">Labrador</option>
-                            <option value="Golden Retriever">Golden Retriever</option>
-                            <option value="Pug">Pug</option>
-                            <option value="Shih Tzu">Shih Tzu</option>
-                            <option value="Pomeranian">Pomeranian</option>
+                            <option value="Labrador" {{ $userPetBreed == 'Labrador' ? 'selected' : '' }}>Labrador</option>
+                            <option value="Golden Retriever" {{ $userPetBreed == 'Golden Retriever' ? 'selected' : '' }}>Golden Retriever</option>
+                            <option value="Pug" {{ $userPetBreed == 'Pug' ? 'selected' : '' }}>Pug</option>
+                            <option value="Shih Tzu" {{ $userPetBreed == 'Shih Tzu' ? 'selected' : '' }}>Shih Tzu</option>
+                            <option value="Pomeranian" {{ $userPetBreed == 'Pomeranian' ? 'selected' : '' }}>Pomeranian</option>
                         </select>
                     </div>
                 </div>
@@ -156,6 +260,8 @@
             form.innerHTML += `<input type="hidden" name="content" value="${document.getElementById('messageTextArea').value}">`;
             form.innerHTML += `<input type="hidden" name="age" value="${document.getElementById('selectAge').value}">`;
             form.innerHTML += `<input type="hidden" name="breed" value="${document.getElementById('selectBreed').value}">`;
+            form.innerHTML += `<input type="hidden" name="user_pet_age" value="{{ $userPetAge ?? '' }}">`;
+            form.innerHTML += `<input type="hidden" name="user_pet_breed" value="{{ $userPetBreed ?? '' }}">`;
             form.innerHTML += `<input type="hidden" name="province" value="${selectProvince.value || ''}">`;
             form.innerHTML += `<input type="hidden" name="city" value="${selectCity.value || ''}">`;
             form.innerHTML += `<input type="hidden" name="interest" value="${document.getElementById('selectInterest').value}">`;

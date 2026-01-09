@@ -2,6 +2,12 @@
 
 @section('title', 'Verify Certificate')
 
+
+{{-- Back to Waggy link --}}
+  <a href="{{ route('signup') }}" 
+   class="absolute top-8 right-8 text-blue-600 hover:text-blue-700 text-sm font-medium">
+    Back to Waggy
+</a>
 @section('content')
 <div class="min-h-screen flex items-center justify-center bg-gray-100">
     <div class="bg-white p-10 rounded-lg shadow-md w-full max-w-md">

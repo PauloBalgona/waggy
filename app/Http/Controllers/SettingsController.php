@@ -33,43 +33,60 @@ class SettingsController extends Controller
     }
 
     public function updateProfile(Request $request)
-{
-    $user = auth()->user();
+    {
+        $user = auth()->user();
 
-    $request->validate([
-        'avatar' => 'nullable|image|max:2048',
-        'pet_name' => 'nullable|string',
-        'pet_breed' => 'nullable|string',
-        'pet_age' => 'nullable|integer',
-        'pet_gender' => 'nullable|string',
-        'pet_features' => 'nullable|string',
-    ]);
+        // Validate avatar with explicit rules and custom messages so user sees clear feedback
+        $messages = [
+            'avatar.image' => 'The uploaded file must be an image.',
+            'avatar.mimes' => 'Allowed image types: jpeg, jpg, png.',
+            'avatar.max' => 'The avatar may not be greater than 2 MB.',
+        ];
 
-    // Avatar upload
-    if ($request->hasFile('avatar')) {
-        $path = $request->file('avatar')->store('avatars', 'public');
+        $request->validate([
+            'avatar' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+            'pet_name' => 'nullable|string',
+            'pet_breed' => 'nullable|string',
+            'pet_age' => 'nullable|integer',
+            'pet_gender' => 'nullable|string',
+            'pet_features' => 'nullable|string',
+        ], $messages);
 
-        // Update the main avatar of the user
-        $user->avatar = $path;
+        // Avatar upload (if provided)
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('avatars', 'public');
 
-        // Save the uploaded image to dog_photos table
-        DogPhoto::create([
-            'user_id' => $user->id,
-            'image_path' => $path
-        ]);
+            // Update the main avatar of the user
+            $user->avatar = $path;
+
+            // Save the uploaded image to dog_photos table
+            DogPhoto::create([
+                'user_id' => $user->id,
+                'image_path' => $path
+            ]);
+        }
+
+        // Only update pet details if present in the request (prevents accidental overwrite)
+        if ($request->filled('pet_name')) {
+            $user->pet_name = $request->pet_name;
+        }
+        if ($request->filled('pet_breed')) {
+            $user->pet_breed = $request->pet_breed;
+        }
+        if ($request->filled('pet_age')) {
+            $user->pet_age = $request->pet_age;
+        }
+        if ($request->filled('pet_gender')) {
+            $user->pet_gender = $request->pet_gender;
+        }
+        if ($request->filled('pet_features')) {
+            $user->pet_features = $request->pet_features;
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profile updated!');
     }
-
-    // Update pet details
-    $user->pet_name = $request->pet_name;
-    $user->pet_breed = $request->pet_breed;
-    $user->pet_age = $request->pet_age;
-    $user->pet_gender = $request->pet_gender;
-    $user->pet_features = $request->pet_features;
-
-    $user->save();
-
-    return redirect()->back()->with('success', 'Profile updated!');
-}
 
 public function updatePassword(Request $request)
 {
@@ -91,5 +108,11 @@ public function updatePassword(Request $request)
 
     return back()->with('success', 'Password updated successfully!');
 }
+
+    public function blockedUsers()
+    {
+        $blockedUsers = auth()->user()->blockedUsers()->with('blockedUser')->get();
+        return view('settings.blocked-users', compact('blockedUsers'));
+    }
 
 }

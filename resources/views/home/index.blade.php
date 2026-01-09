@@ -5,20 +5,6 @@
 @section('content')
 
     <style>
-        .left-sidebar,
-        .right-sidebar,
-        aside,
-        nav.sidebar,
-        #left-sidebar,
-        #right-sidebar {
-            background-color: #1B1E25 !important;
-        }
-
-        * {
-            border-left: none !important;
-            border-right: none !important;
-        }
-
         .modal-container {
             position: fixed;
             top: 0;
@@ -142,6 +128,49 @@
             text-decoration: none !important;
         }
 
+        .dropdown-menu-custom {
+            background: #252933 !important;
+            border: 1px solid #3d4557 !important;
+            border-radius: 8px !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+            padding: 6px 0 !important;
+            min-width: 140px !important;
+            z-index: 1000 !important;
+        }
+
+        .dropdown-item-custom {
+            display: block !important;
+            width: 100% !important;
+            padding: 10px 16px !important;
+            color: #e5e7eb !important;
+            background-color: transparent !important;
+            border: none !important;
+            text-align: left !important;
+            cursor: pointer !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            text-decoration: none !important;
+            transition: all 0.15s ease !important;
+        }
+
+        .dropdown-item-custom:hover {
+            background-color: #3d4557 !important;
+            color: #ffffff !important;
+        }
+
+        .dropdown-item-custom:active {
+            background-color: #2a3142 !important;
+        }
+
+        .dropdown-item-custom.text-danger {
+            color: #ef4444 !important;
+        }
+
+        .dropdown-item-custom.text-danger:hover {
+            color: #fca5a5 !important;
+            background-color: rgba(239, 68, 68, 0.1) !important;
+        }
+
         * {
             scrollbar-width: none;
             -ms-overflow-style: none;
@@ -150,20 +179,195 @@
         *::-webkit-scrollbar {
             display: none;
         }
+        /* =========================
+   MOBILE ONLY FIX
+   ========================= */
+@media (max-width: 768px) {
+
+    /* POST CONTAINER FULL WIDTH */
+    .post-container {
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* POST CARD */
+    .post {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 0 12px 0 !important;
+        border-radius: 0 !important;
+    }
+
+    /* IMAGE EDGE TO EDGE */
+    .post > div[style*="background-color:#1B1E25"] {
+        margin-left: -16px !important;
+        margin-right: -16px !important;
+        border-radius: 0 !important;
+    }
+
+    .post img {
+        width: 100% !important;
+        height: auto !important;
+        display: block !important;
+    }
+
+    /* ACTION BUTTONS CENTERED */
+    .post .border-top {
+        justify-content: center !important;
+        gap: 40px !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .post .border-top form,
+    .post .border-top a {
+        flex: 0 !important;
+    }
+
+     .post > div[style*="max-height"] {
+        margin-left: -8px !important;
+        margin-right: -8px !important;
+        width: calc(100% + 16px) !important;
+        border-radius: 0 !important;
+    }
+
+    .post > div img {
+        width: 100% !important;
+        height: auto !important;
+        object-fit: cover !important;
+        border-radius: 0 !important;
+        display: block !important;
+    }
+
+    /* ===== USER ICON (POSTING + POSTS) ===== */
+    section.post img.rounded-circle,
+    .post .rounded-circle {
+        width: 36px !important;
+        height: 36px !important;
+        object-fit: cover !important;
+        margin-top: 0 !important;
+    }
+
+    /* ALIGN ICON + INPUT */
+    section.post .d-flex.align-items-start {
+        align-items: center !important;
+        gap: 10px !important;
+    }
+
+    /* WHAT'S ON YOUR MIND */
+    section.post div[onclick] {
+        min-height: 38px !important;
+        padding: 8px 12px !important;
+        font-size: 12.5px !important;
+        border-radius: 10px !important;
+        line-height: 1.3 !important;
+    }
+
+    /* IMAGE BUTTON */
+    #photoBtn {
+        width: 40px !important;
+        height: 38px !important;
+        border-radius: 10px !important;
+    }
+
+    #photoBtn i {
+        font-size: 18px !important;
+    }
+
+    /* ===== FILTER SECTION ===== */
+    #filter-section {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px 12px !important;
+        padding: 8px 0 4px !important;
+    }
+
+    #filter-section button,
+    #filter-section a {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
+        font-size: 12px !important;
+        padding: 6px 8px !important;
+        border-radius: 10px !important;
+    }
+
+    #filter-section i {
+        font-size: 16px !important;
+    }
+    #filter-section a {
+        justify-content: flex-start !important;
+        padding-left: 11px !important;
+    }
+     /* LIKE + COMMENT WRAPPER */
+    .post .d-flex.justify-content-around {
+        justify-content: space-evenly !important;
+        padding: 6px 0 !important;
+    }
+
+    /* LIKE / COMMENT BUTTON */
+    .post .btn-link {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        font-size: 12px !important;
+        padding: 4px 6px !important;
+    }
+
+    .post .btn-link i {
+        font-size: 16px !important;
+        line-height: 1 !important;
+        display: flex;
+        align-items: center;
+    }
+
+    .post .btn-link span {
+        line-height: 1 !important;
+        display: flex;
+        align-items: center;
+    }
+.post .bi-heart,
+    .post .bi-chat-dots {
+        font-size: 16px;
+        position: relative;
+        top:5px;
+        line-height: 1;
+        vertical-align: middle;
+        display: inline-block;
+    }
+.post .btn-link {
+    text-decoration: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.post .btn-link:focus,
+.post .btn-link:active,
+.post .btn-link:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+}
+
     </style>
     <div class="min-h-screen flex">
-
-        <!-- MAIN CONTENT -->
-        <div class="post-container" style="max-width:70%; margin-left:110px; display:flex; flex-direction:column; gap:5px;">
+        <div class="post-container" style="max-width:70%; margin-left:130px; display:flex; flex-direction:column; gap:5px;">
 
             <!-- POST INPUT SECTION -->
             <section class="post p-4 mt-0"
                 style="background-color:#292D37; border-radius:5px; position: relative; margin-bottom: 10px;">
 
                 <div class="d-flex align-items-start mb-3">
-                    <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('assets/usericon.png') }}"
-                        alt="Profile" class="rounded-circle me-3 mt-1"
-                        style="width:50px; height:50px; object-fit:cover; background:#333;">
+    <img
+        src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('assets/usericon.png') }}"
+        alt="Profile"
+        class="rounded-circle me-3 mt-1"
+        style="width:50px; height:50px; object-fit:cover; background:#333; cursor:pointer;"
+        onclick="window.location.href='{{ route('profile.show', auth()->user()->id) }}'">
 
                     <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="w-100">
                         @csrf
@@ -173,8 +377,8 @@
                             <!-- POSTING PAGE -->
                             <div onclick="window.location.href='{{ route('posting.page') }}'"
                                 style="flex:1; padding:13px 14px; background:#1B1E25;
-                                                                                                                                                                                                                                                    border-radius:12px; color:#adb5bd; min-height:55px;
-                                                                                                                                                                                                                                                    border:none; outline:none; resize:none; cursor:pointer;">
+                                                                                                                                                                                                                                                                                                                                                border-radius:12px; color:#adb5bd; min-height:55px;
+                                                                                                                                                                                                                                                                                                                                                border:none; outline:none; resize:none; cursor:pointer;">
                                 What's on your mind?
                             </div>
 
@@ -212,13 +416,10 @@
                         </button>
                     </div>
 
-                    <!-- LOCATION FILTER WITH MODAL -->
-                    <div class="position-relative">
-                        <button id="filter-location" onclick="showCityModal()"
-                            class="btn btn-link text-white d-flex align-items-center gap-1">
-                            <i class="bi bi-geo-alt fs-4"></i><span id="location-text">Location</span>
-                        </button>
-                    </div>
+                    <a href="{{ route('location') }}" class="btn btn-link text-white d-flex align-items-center gap-1">
+                        <i class="bi bi-geo-alt fs-4"></i>
+                        <span id="location-text">Location</span>
+                    </a>
 
                     <!-- AUDIENCE FILTER WITH MODAL -->
                     <div class="position-relative">
@@ -236,7 +437,7 @@
             @foreach ($posts as $post)
 
                 <div class="post mb-4" data-interest="{{ $post->interest }}"
-                    style="background-color:#292D37; border-radius:8px; overflow:hidden; max-width:800px;">
+                    style=" background-color:#292D37; border-radius:8px; overflow:hidden; max-width:800px;">
 
                     {{-- POST HEADER (User Info) --}}
                     <div class="p-3 d-flex align-items-center gap-3 border-bottom" style="border-color:#1B1E25;">
@@ -248,7 +449,7 @@
                                 class="rounded-circle" style="width:40px; height:40px; object-fit:cover;">
 
                             <div>
-                                <h6 class="text-white mb-0" style="font-size:14px;">
+                                <h6 class=" text-white mb-0" style="font-size:14px;">
                                     {{ $post->user->pet_name ?? 'Unknown User' }}
                                 </h6>
                                 <small class="text-white mb-0" style="font-size:12px;">
@@ -259,33 +460,49 @@
                         </a>
 
                         <div class="ms-auto position-relative">
-                            <button class="btn btn-link text-white p-0" onclick="toggleMenu({{ $post->id }})">
-                                <i class="bi bi-three-dots-vertical fs-5"></i>
+                            <button class="btn btn-link text-white p-0" onclick="toggleMenu({{ $post->id }})"
+                                style="border: none; background: none;">
+                                <i class=" bi bi-three-dots-vertical fs-5"></i>
                             </button>
 
                             <div id="menu-{{ $post->id }}" class="dropdown-menu-custom"
-                                style="position:absolute; right:0; top:30px; background:#1B1E25; border-radius:8px; width:150px; display:none;">
+                                style="position:absolute; right:0; top:30px; display:none;">
 
                                 @if($post->user_id === auth()->id())
+                                    <!-- EDIT -->
+                                    <a href="{{ route('posts.edit', $post->id) }}" class=" dropdown-item-custom">
+                                        <i class="bi bi-pencil me-2"></i>Edit
+                                    </a>
+
                                     <!-- DELETE -->
-                                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
+                                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="margin: 0;">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="dropdown-item-custom text-danger">Delete</button>
+                                        <button type="submit" class="dropdown-item-custom text-danger" style="border: none;">
+                                            <i class="bi bi-trash me-2"></i>Delete
+                                        </button>
                                     </form>
+                                @else
+                                    <!-- REPORT -->
+                                    <form action="{{ route('posts.report', $post->id) }}" method="POST" style="margin: 0;"> @csrf
+                                        <button type="submit" class="dropdown-item-custom" style="border: none;">
+                                            <i class="bi bi-flag me-2"></i>Report
+                                        </button>
+                                    </form>
+
+                                    <!-- BLOCK/UNBLOCK -->
+                                    @if(auth()->user()->hasBlocked($post->user_id))
+                                        <button type="button" class="dropdown-item-custom" onclick="unblockUser({{ $post->user_id }})"
+                                            style="border: none;">
+                                            <i class="bi bi-unlock me-2"></i>Unblock
+                                        </button>
+                                    @else
+                                        <button type="button" class="dropdown-item-custom" onclick="blockUser({{ $post->user_id }})"
+                                            style="border: none;">
+                                            <i class="bi bi-ban me-2"></i>Block
+                                        </button>
+                                    @endif
                                 @endif
-
-                                <!-- REPORT -->
-                                <form action="{{ route('posts.report', $post->id) }}" method="POST">
-                                    @csrf
-                                    <button class="dropdown-item-custom">Report</button>
-                                </form>
-
-                                <!-- BLOCK -->
-                                <form action="{{ route('user.block', $post->user_id) }}" method="POST">
-                                    @csrf
-                                    <button class="dropdown-item-custom">Block</button>
-                                </form>
                             </div>
                         </div>
 
@@ -302,13 +519,14 @@
                     @if($post->photo)
                         <div class="w-100"
                             style="background-color:#1B1E25; max-height:450px; overflow:hidden; display:flex; align-items:center; justify-content:center;">
-                            <img src="{{ asset('storage/' . $post->photo) }}"
-                                style="width:100%; height:auto; max-height:450px; object-fit:cover; display:block;">
+                            <img src="{{ asset('storage/' . $post->photo) }}" style="width:100%; height:auto; max-height:450px;
+                                                                                        object-fit:cover; display:block;">
                         </div>
                     @endif
 
-                    {{-- TAGS (AGE / BREED / LOCATION / INTEREST) --}}
+                    {{-- TAGS (AGE / BREED / LOCATION / INTEREST / AUDIENCE) --}}
                     @if($post->city || $post->age || $post->breed || $post->interest)
+
                         <div class="p-3 d-flex flex-wrap gap-2">
 
                             {{-- LOCATION (BLUE) --}}
@@ -329,19 +547,19 @@
                                 </span>
                             @endif
 
-                            {{-- BREED (GREEN) --}}
                             @if($post->breed)
                                 <span class="badge text-white d-flex align-items-center gap-1"
                                     style="background-color:#1B1E25; font-size:11px; padding:6px 12px; border-radius:20px; font-weight:normal;">
-                                    <i class="bi bi-tag" style="color:#20c997;"></i>
-                                    {{ $post->breed }}
+                                    <i class="bi bi-tags-fill" style="color:#facc15;"></i>
+                                    Breed: {{ $post->breed }}
                                 </span>
                             @endif
 
                             {{-- INTEREST (RED HEART) --}}
                             @if($post->interest)
                                 <span class="badge text-white d-flex align-items-center gap-1"
-                                    style="background-color:#1B1E25; font-size:11px; padding:6px 12px; border-radius:20px; font-weight:normal;">
+                                    style="background-color:#1B1E25;
+                                                                                                                    font-size:11px; padding:6px 12px; border-radius:20px; font-weight:normal;">
                                     <i class="bi bi-heart" style="color:#ff4d6d;"></i>
                                     {{ $post->interest }}
                                 </span>
@@ -363,6 +581,7 @@
                                 <i class="bi bi-heart" style="font-size:18px;"></i>
                                 <span>{{ $post->likes_count }} Like{{ $post->likes_count != 1 ? 's' : '' }}</span>
                             </button>
+
                         </form>
 
                         {{-- COMMENT BUTTON --}}
@@ -370,7 +589,7 @@
                             class="btn btn-link text-white d-flex align-items-center gap-2"
                             style="font-size:13px; text-decoration:none;">
                             <i class="bi bi-chat-dots" style="font-size:18px;"></i>
-                            <span>Comment</span>
+                            <span>{{ $post->comments_count }} Comment{{ $post->comments_count != 1 ? 's' : '' }}</span>
                         </a>
 
                     </div>
@@ -382,8 +601,127 @@
         </div>
 
         @section('right-sidebar')
-            <h6 class="text-white font-semibold mb-4">Contacts</h6>
+            <style>
+                .contact-item-wrapper {
+                    position: relative;
+                }
 
+                .contact-menu-btn {
+                    background: none;
+                    border: none;
+                    color: #8b95a5;
+                    cursor: pointer;
+                    font-size: 1.2rem;
+                    padding: 4px;
+                    opacity: 0;
+                    transition: opacity 0.2s, color 0.2s;
+                }
+
+                .contact-item-wrapper:hover .contact-menu-btn {
+                    opacity: 1;
+                }
+
+                .contact-menu-btn:hover {
+                    color: white;
+                }
+
+                .contact-dropdown {
+                    position: absolute;
+                    top: 100%;
+                    right: 0;
+                    background-color: #2a3142;
+                    border: 1px solid #3d4757;
+                    border-radius: 0.5rem;
+                    min-width: 150px;
+                    z-index: 1000;
+                    display: none;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+                    margin-top: 4px;
+                }
+
+                .contact-dropdown.show {
+                    display: block;
+                }
+
+                .contact-dropdown-item {
+                    padding: 0.75rem 1rem;
+                    color: white;
+                    cursor: pointer;
+                    text-decoration: none;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-size: 0.9rem;
+                    border: none;
+                    background: none;
+                    width: 100%;
+                    text-align: left;
+                    transition: background-color 0.2s;
+                }
+
+                .contact-dropdown-item:hover {
+                    background-color: #3d4757;
+                }
+
+                .contact-dropdown-item.danger {
+                    color: #ef4444;
+                }
+
+                .contact-dropdown-item.danger:hover {
+                    background-color: rgba(239, 68, 68, 0.1);
+                }
+            </style>
+
+            <div
+                style="background-color: transparent; border: none; border-radius: 0; padding: 0; display: flex; flex-direction: column;">
+                <h6 style="color: white; font-weight: 600; margin-bottom: 16px; margin-top: 0;">Contacts</h6>
+
+                <div style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
+                    @forelse($friends ?? [] as $friend)
+                        <div class="contact-item-wrapper"
+                            style="position: relative; display: flex; align-items: center; gap: 12px; padding: 10px; background-color: #1e2230; border-radius: 8px; border: 1px solid #3d4557; transition: all 0.2s ease;"
+                            onmouseover="this.style.backgroundColor='#2d323f'; this.style.borderColor='#4a5568';"
+                            onmouseout="this.style.backgroundColor='#1e2230'; this.style.borderColor='#3d4557';">
+
+                            <a href="{{ route('messages.conversation', $friend->id) }}"
+                                style="display: flex; align-items: center; gap: 12px; text-decoration: none; flex: 1; min-width: 0;">
+                                <img src="{{ $friend->avatar ? asset('storage/' . $friend->avatar) : asset('assets/usericon.png') }}"
+                                    style="width: 2.75rem; height: 2.75rem; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid #3d4557;">
+                                <div style="flex: 1; min-width: 0;">
+                                    <p
+                                        style="color: white; margin: 0; font-size: 0.875rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        {{ $friend->pet_name }}
+                                    </p>
+                                    <p style="color: #8b95a5; margin: 0; font-size: 0.75rem;">
+                                        {{ $friend->pet_breed }}
+                                    </p>
+                                </div>
+                            </a>
+
+                            <button class="contact-menu-btn" onclick="toggleContactMenu(event, {{ $friend->id }})">
+                                ⋮
+                            </button>
+                            <div class="contact-dropdown" id="menu-{{ $friend->id }}">
+                                <button class="contact-dropdown-item" onclick="unfriendUser({{ $friend->id }})">
+                                    <i class="bi bi-person-x"></i> Unfriend
+                                </button>
+                                @if(auth()->user()->hasBlocked($friend->id))
+                                    <button class="contact-dropdown-item" onclick="unblockUser({{ $friend->id }})">
+                                        <i class="bi bi-lock-fill"></i> Unblock
+                                    </button>
+                                @else
+                                    <button class="contact-dropdown-item danger" onclick="blockUser({{ $friend->id }})">
+                                        <i class="bi bi-ban"></i> Block
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
+                    @empty
+                        <p style="color: #8b95a5; font-size: 0.875rem; text-align: center; margin: 0; padding: 16px 0;">No contacts
+                            yet</p>
+                    @endforelse
+                </div>
+            </div>
 
         @endsection
 
@@ -639,56 +977,120 @@
                 // Create modal for message composition
                 const modal = document.createElement('div');
                 modal.style.cssText = `
-                                                                                                                                                        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                                                                                                                                                        background-color: rgba(0,0,0,0.8); display: flex; align-items: center;
-                                                                                                                                                        justify-content: center; z-index: 9999; animation: fadeIn 0.2s ease;
-                                                                                                                                                    `;
+                                                                                                                                                                                                                                                                                                                                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                                                                                                                                                                                                                                                                                                                                background-color: rgba(0,0,0,0.8); display: flex; align-items: center;
+                                                                                                                                                                                                                                                                                                                                justify-content: center; z-index: 9999; animation: fadeIn 0.2s ease;
+                                                                                                                                                                                                                                                                                                                            `;
 
                 modal.innerHTML = `
-                                                                                                                                                        <div style="
-                                                                                                                                                            background: linear-gradient(145deg, #2a2e38, #252933);
-                                                                                                                                                            border-radius: 16px; padding: 28px; width: 90%; max-width: 420px;
-                                                                                                                                                            position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-                                                                                                                                                            animation: slideUp 0.3s ease;
-                                                                                                                                                        ">
-                                                                                                                                                            <button onclick="this.closest('div').parentElement.remove()"
-                                                                                                                                                                style="
-                                                                                                                                                                    position: absolute; right: 20px; top: 20px; background: none;
-                                                                                                                                                                    border: none; color: #8b95a5; font-size: 24px; cursor: pointer;
-                                                                                                                                                                ">×</button>
-                                                                                                                                                            <h5 style="color: white; margin-bottom: 20px; font-size: 20px; font-weight: 600;">
-                                                                                                                                                                Send Message to ${userName}
-                                                                                                                                                            </h5>
-                                                                                                                                                            <form id="messageRequestForm">
-                                                                                                                                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                                                                                                                <input type="hidden" name="receiver_id" value="${userId}">
-                                                                                                                                                                <textarea name="message" placeholder="Write your message..."
-                                                                                                                                                                    style="
-                                                                                                                                                                        width: 100%; min-height: 100px; background-color: #1e2230;
-                                                                                                                                                                        border: 1px solid #3a3f52; color: #fff; padding: 12px 16px;
-                                                                                                                                                                        border-radius: 8px; font-size: 14px; resize: vertical;
-                                                                                                                                                                        outline: none;
-                                                                                                                                                                    " required></textarea>
-                                                                                                                                                                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                                                                                                                                                                    <button type="button" onclick="this.closest('div').parentElement.remove()"
-                                                                                                                                                                        style="
-                                                                                                                                                                            flex: 1; background: #6b7280; color: white; border: none;
-                                                                                                                                                                            padding: 12px; border-radius: 8px; cursor: pointer;
-                                                                                                                                                                        ">Cancel</button>
-                                                                                                                                                                    <button type="submit"
-                                                                                                                                                                        style="
-                                                                                                                                                                            flex: 1; background: #3b82f6; color: white; border: none;
-                                                                                                                                                                            padding: 12px; border-radius: 8px; cursor: pointer;
-                                                                                                                                                                        ">Send Request</button>
-                                                                                                                                                                </div>
-                                                                                                                                                            </form>
-                                                                                                                                                        </div>
-                                                                                                                                                    `;
+                                                                                                                                                                                                                                                                                                                                <div style="
+                                                                                                                                                                                                                                                                                                                                    background: linear-gradient(145deg, #2a2e38, #252933);
+                                                                                                                                                                                                                                                                                                                                    border-radius: 16px; padding: 28px; width: 90%; max-width: 420px;
+                                                                                                                                                                                                                                                                                                                                    position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+                                                                                                                                                                                                                                                                                                                                    animation: slideUp 0.3s ease;
+                                                                                                                                                                                                                                                                                                                                ">
+                                                                                                                                                                                                                                                                                                                                    <button onclick="this.closest('div').parentElement.remove()"
+                                                                                                                                                                                                                                                                                                                                        style="
+                                                                                                                                                                                                                                                                                                                                            position: absolute; right: 20px; top: 20px; background: none;
+                                                                                                                                                                                                                                                                                                                                            border: none; color: #8b95a5; font-size: 24px; cursor: pointer;
+                                                                                                                                                                                                                                                                                                                                        ">×</button>
+                                                                                                                                                                                                                                                                                                                                    <h5 style="color: white; margin-bottom: 20px; font-size: 20px; font-weight: 600;">
+                                                                                                                                                                                                                                                                                                                                        Send Message to ${userName}
+                                                                                                                                                                                                                                                                                                                                    </h5>
+                                                                                                                                                                                                                                                                                                                                    <form id="messageRequestForm">
+                                                                                                                                                                                                                                                                                                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                                                                                                                                                                                                                                                                                        <input type="hidden" name="receiver_id" value="${userId}">
+                                                                                                                                                                                                                                                                                                                                        <textarea name="message" placeholder="Write your message..."
+                                                                                                                                                                                                                                                                                                                                            style="
+                                                                                                                                                                                                                                                                                                                                                width: 100%; min-height: 100px; background-color: #1e2230;
+                                                                                                                                                                                                                                                                                                                                                border: 1px solid #3a3f52; color: #fff; padding: 12px 16px;
+                                                                                                                                                                                                                                                                                                                                                border-radius: 8px; font-size: 14px; resize: vertical;
+                                                                                                                                                                                                                                                                                                                                                outline: none;
+                                                                                                                                                                                                                                                                                                                                            " required></textarea>
+                                                                                                                                                                                                                                                                                                                                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                                                                                                                                                                                                                                                                                                                                            <button type="button" onclick="this.closest('div').parentElement.remove()"
+                                                                                                                                                                                                                                                                                                                                                style="
+                                                                                                                                                                                                                                                                                                                                                    flex: 1; background: #6b7280; color: white; border: none;
+                                                                                                                                                                                                                                                                                                                                                    padding: 12px; border-radius: 8px; cursor: pointer;
+                                                                                                                                                                                                                                                                                                                                                ">Cancel</button>
+                                                                                                                                                                                                                                                                                                                                            <button type="submit"
+                                                                                                                                                                                                                                                                                                                                                style="
+                                                                                                                                                                                                                                                                                                                                                    flex: 1; background: #3b82f6; color: white; border: none;
+                                                                                                                                                                                                                                                                                                                                                    padding: 12px; border-radius: 8px; cursor: pointer;
+                                                                                                                                                                                                                                                                                                                                                ">Send Request</button>
+                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                    </form>
+                                                                                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                                                                            `;
 
                 document.body.appendChild(modal);
 
 
             }
+
+            // Contact menu functions
+            function toggleContactMenu(event, friendId) {
+                event.preventDefault();
+                event.stopPropagation();
+                const menu = document.getElementById(`menu-${friendId}`);
+
+                // Close all other menus
+                document.querySelectorAll('.contact-dropdown.show').forEach(dropdown => {
+                    if (dropdown.id !== `menu-${friendId}`) {
+                        dropdown.classList.remove('show');
+                    }
+                });
+
+                menu.classList.toggle('show');
+            }
+
+            function unfriendUser(userId) {
+                if (confirm('Are you sure you want to unfriend this user?')) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/friend/unfriend/${userId}`;
+                    form.innerHTML = `
+                                                                                                                                                                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                                                                                                                                            `;
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
+
+            function blockUser(userId) {
+                if (confirm('Are you sure you want to block this user? You will no longer see their posts or messages.')) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/posts/${userId}/block`;
+                    form.innerHTML = `
+                                                                                                                                                                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                                                                                                                                            `;
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
+
+            function unblockUser(userId) {
+                if (confirm('Are you sure you want to unblock this user?')) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/posts/${userId}/unblock`;
+                    form.innerHTML = `
+                                                                                                                                                                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                                                                                                                                            `;
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
+
+            // Close contact dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!event.target.closest('.contact-item-wrapper')) {
+                    document.querySelectorAll('.contact-dropdown.show').forEach(dropdown => {
+                        dropdown.classList.remove('show');
+                    });
+                }
+            });
         </script>
     @endpush
 

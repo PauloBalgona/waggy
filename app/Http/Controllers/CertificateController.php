@@ -40,9 +40,9 @@ class CertificateController extends Controller
 
         $fields = [
             'pet_name' => $user->pet_name,
-            'breedtype' => $user->pet_breed,
-            'dog_age' => $user->pet_age,
-            'gendertype' => $user->pet_gender,
+            'pet_breed' => $user->pet_breed,
+            'pet_age' => $user->pet_age,
+            'pet_gender' => $user->pet_gender,
         ];
 
         $match = $this->matchFieldsToText($fields, $text);
@@ -54,7 +54,12 @@ class CertificateController extends Controller
             return redirect()->route('home')->with('success', 'Certificate verified successfully!');
         }
 
-        return back()->withErrors(['certificate' => 'Verification failed: ' . $match['summary']]);
+        // Build detailed error message
+        $failedFields = array_filter($match['details'], fn($d) => !$d['ok']);
+        $failedList = implode(', ', array_keys($failedFields));
+        $errorMsg = "Certificate verification failed. The following fields did not match: {$failedList}. Please ensure all information in your certificate matches your registration data.";
+        
+        return back()->withErrors(['certificate' => $errorMsg]);
     }
 
     protected function extractTextFromFile(string $fullpath): string
@@ -92,22 +97,45 @@ class CertificateController extends Controller
                 continue;
             }
 
+            $matched = false;
+
+            // Exact match
             if (mb_stripos($textLower, $vClean) !== false) {
-                $details[$k] = ['ok' => true, 'matched' => $vClean];
-                $passedCount++;
-            } else {
+                $matched = true;
+            }
+
+            // Loose alphanumeric match
+            if (!$matched) {
                 $onlyText = preg_replace('/[^a-z0-9]+/u', ' ', $textLower);
                 $onlyVal = preg_replace('/[^a-z0-9]+/u', ' ', $vClean);
                 if ($onlyVal && mb_stripos($onlyText, $onlyVal) !== false) {
-                    $details[$k] = ['ok' => true, 'matched' => $vClean, 'method' => 'loose'];
-                    $passedCount++;
-                } else {
-                    $details[$k] = ['ok' => false, 'reason' => 'no match', 'value' => $vClean];
+                    $matched = true;
                 }
+            }
+
+            // Special handling for age - look for the number with words like "year", "years", "age", etc.
+            if (!$matched && $k === 'pet_age' && is_numeric($vClean)) {
+                $agePatterns = [
+                    $vClean . '\s*(year|yr|yrs|years|old|age)?\b',
+                    '\b(age|at|years?|yr|yrs)?\s*' . $vClean,
+                ];
+                foreach ($agePatterns as $pattern) {
+                    if (preg_match('/' . $pattern . '/iu', $text)) {
+                        $matched = true;
+                        break;
+                    }
+                }
+            }
+
+            if ($matched) {
+                $details[$k] = ['ok' => true, 'matched' => $vClean];
+                $passedCount++;
+            } else {
+                $details[$k] = ['ok' => false, 'reason' => 'no match', 'value' => $vClean];
             }
         }
 
-        $passed = ($passedCount >= max(1, ceil($needed * 0.75)));
+        $passed = ($passedCount >= $needed); // ALL fields must match
         $summary = "Matched {$passedCount} of {$needed} fields.";
 
         return ['passed' => $passed, 'details' => $details, 'summary' => $summary];

@@ -1,4 +1,4 @@
-@extends('navbar.nav1')
+@extends('navbar.nav')
 
 @section('title', 'Profile')
 @section('body-class', 'bg-gray-900 text-white')
@@ -21,6 +21,62 @@
             background: rgba(255, 255, 255, 0.08) !important;
             border-radius: 6px;
         }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .profile-page {
+                padding: 0 12px;
+            }
+
+            .d-flex.align-items-center.gap-4.mb-4 {
+                flex-direction: column;
+                text-align: center;
+                gap: 16px !important;
+            }
+
+            .d-flex.align-items-center.gap-4.mb-4 img {
+                width: 100px !important;
+                height: 100px !important;
+            }
+
+            .profile-info {
+                width: 100%;
+            }
+
+            .nav-tabs {
+                flex-wrap: wrap;
+            }
+
+            .nav-tabs .nav-link {
+                padding: 12px 16px !important;
+                font-size: 13px;
+            }
+
+            .nav-tabs .nav-link span {
+                display: none;
+            }
+
+            .d-flex.justify-content-between.align-items-center {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            button[data-bs-target="#editProfileModal"] {
+        position: relative;
+        left:220px;
+        bottom: 46px;
+        width: 36%;
+         font-size: 12px;
+    }
+    .profile-page {
+        margin-top: 20px;   
+    }
+     #editProfileModal .modal-dialog {
+        margin-top: 60px;
+        position: relative;
+        right: 8px;
+    }
+
+        }
     </style>
 
     <div class="profile-page">
@@ -29,7 +85,7 @@
 
             {{-- LARGE PROFILE HEADER --}}
             <div class="d-flex align-items-center gap-4 mb-4">
-                <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('assets/usericon.png') }}"
+                <img src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('assets/usericon.png') }}"
                     alt="{{ $user->name }}" class="rounded-circle"
                     style="width: 120px; height: 120px; border: 4px solid #4a5568; object-fit: cover;">
 
@@ -100,8 +156,15 @@
 
                 </ul>
 
-                {{-- ADD FRIEND BUTTON (RIGHT SIDE) --}}
-                @if(auth()->id() !== $user->id)
+                {{-- EDIT PROFILE BUTTON (FOR OWN PROFILE) --}}
+                @if(auth()->id() === $user->id)
+                    <button type="button" class="px-4 py-2 rounded text-white"
+                        style="background-color: #4a90e2; border: none; font-weight: 600;" data-bs-toggle="modal"
+                        data-bs-target="#editProfileModal">
+                        <i class="bi bi-pencil"></i> Edit Profile
+                    </button>
+                    {{-- ADD FRIEND BUTTON (FOR OTHER PROFILES) --}}
+                @elseif(auth()->id() !== $user->id)
                     @if($friendRequest && $friendRequest->status == 'pending')
                         <form action="{{ route('friend.request.cancel', $user->id) }}" method="POST">
                             @csrf
@@ -235,6 +298,129 @@
             </div>
 
         </div>
+
+        {{-- EDIT PROFILE MODAL --}}
+        @if(auth()->id() === $user->id)
+            <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 500px; width: 100%;">
+                    <div class="modal-content bg-dark border-secondary">
+                        <div class="modal-header border-secondary">
+                            <h5 class="modal-title text-white" id="editProfileModalLabel">Edit Profile</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ route('editprofile.update') }}" method="POST" enctype="multipart/form-data"
+                                class="text-white">
+                                @csrf
+                                @method('PUT')
+
+                                {{-- Avatar --}}
+                                <div class="text-center mb-4">
+                                    <img id="avatarPreview"
+                                        src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('assets/usericon.png') }}"
+                                        style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #4a5568;">
+                                    <div class="mt-3">
+                                        <label class="btn btn-outline-light btn-sm">
+                                            <i class="bi bi-camera"></i> Change Photo
+                                            <input id="profileAvatarInput" type="file" name="avatar" hidden
+                                                accept="image/png,image/jpeg">
+                                        </label>
+                                        <div id="profileFileInfo" class="mt-2 small text-secondary">Allowed: JPG, PNG — Max 2MB
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Pet fields are shown but not editable here (avatar-only modal). Remove name attributes so
+                                they are not submitted. --}}
+                                <div class="mb-3">
+                                    <label class="form-label">Pet Name</label>
+                                    <input type="text" class="form-control bg-secondary text-white border-0"
+                                        value="{{ auth()->user()->pet_name }}" readonly>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Pet Breed</label>
+                                    <input type="text" class="form-control bg-secondary text-white border-0"
+                                        value="{{ auth()->user()->pet_breed }}" readonly>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Pet Age</label>
+                                    <input type="number" class="form-control bg-secondary text-white border-0"
+                                        value="{{ auth()->user()->pet_age }}" readonly>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Pet Gender</label>
+                                    <input type="text" class="form-control bg-secondary text-white border-0"
+                                        value="{{ auth()->user()->pet_gender ?? 'N/A' }}" readonly>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Pet Features</label>
+                                    <textarea rows="3" class="form-control bg-secondary text-white border-0"
+                                        readonly>{{ auth()->user()->pet_features }}</textarea>
+                                </div>
+
+                                <button id="profileSaveBtn" type="submit" class="btn btn-primary w-100 fw-bold">Save
+                                    Photo</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                const profileAvatarInput = document.getElementById('profileAvatarInput');
+                const profileFileInfo = document.getElementById('profileFileInfo');
+                const profileAvatarPreview = document.querySelector('#editProfileModal #avatarPreview');
+
+                if (profileAvatarInput) {
+                    profileAvatarInput.addEventListener('change', function (e) {
+                        const file = e.target.files[0];
+                        if (!file) return;
+
+                        // client-side validation
+                        const allowed = ['image/jpeg', 'image/png', 'image/jpg'];
+                        if (!allowed.includes(file.type)) {
+                            profileFileInfo.textContent = '❌ Invalid file type. Allowed: JPG, PNG';
+                            profileAvatarInput.value = '';
+                            return;
+                        }
+
+                        const maxBytes = 2 * 1024 * 1024; // 2MB
+                        if (file.size > maxBytes) {
+                            profileFileInfo.textContent = '❌ File too large. Max 2 MB';
+                            profileAvatarInput.value = '';
+                            return;
+                        }
+
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            if (profileAvatarPreview) profileAvatarPreview.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                        profileFileInfo.textContent = `Selected: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+                    });
+                }
+
+                // Prevent submit if selected file invalid (extra guard)
+                const profileForm = document.querySelector('#editProfileModal form[action="{{ route('editprofile.update') }}"]');
+                if (profileForm) {
+                    profileForm.addEventListener('submit', function (e) {
+                        if (profileAvatarInput && profileAvatarInput.files.length > 0) {
+                            const f = profileAvatarInput.files[0];
+                            if (f.size > 2 * 1024 * 1024) {
+                                e.preventDefault();
+                                alert('Avatar file is too large. Maximum allowed is 2 MB.');
+                            }
+                        }
+                    });
+                }
+            </script>
+        @endif
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
