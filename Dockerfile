@@ -62,11 +62,19 @@ WORKDIR /var/www/html
 COPY . .
 
 # ================================
-# PERMISSIONS
+# FIX LARAVEL CACHE PATH
 # ================================
-RUN mkdir -p storage/framework/{cache,sessions,views} bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache
+RUN mkdir -p \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    bootstrap/cache \
+ && touch \
+    bootstrap/cache/.gitignore \
+    storage/framework/cache/.gitignore \
+ && chown -R www-data:www-data storage bootstrap/cache \
+ && chmod -R 775 storage bootstrap/cache
+
 
 # ================================
 # INSTALL PHP DEPS
