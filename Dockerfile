@@ -49,10 +49,19 @@ WORKDIR /var/www/html
 COPY . .
 
 # -------------------------------------------------
-# 7. Composer
+# 7. Prepare Laravel cache directories (FIX)
 # -------------------------------------------------
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+RUN mkdir -p \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache
 
+# -------------------------------------------------
+# 8. Composer (NOW SAFE)
+# -------------------------------------------------
 RUN composer install \
     --no-dev \
     --no-interaction \
@@ -60,22 +69,6 @@ RUN composer install \
     --optimize-autoloader
 
 # -------------------------------------------------
-# 8. Vite build (THIS FIXES THE ERROR)
+# 9. Vite build
 # -------------------------------------------------
 RUN npm install && npm run build
-
-# -------------------------------------------------
-# 9. Permissions
-# -------------------------------------------------
-RUN mkdir -p storage/framework/{cache,sessions,views} \
-    && chown -R www-data:www-data storage bootstrap/cache
-
-EXPOSE 80
-
-# -------------------------------------------------
-# 10. Runtime
-# -------------------------------------------------
-CMD php artisan key:generate --force || true && \
-    php artisan migrate --force || true && \
-    php artisan storage:link || true && \
-    apache2-foreground
