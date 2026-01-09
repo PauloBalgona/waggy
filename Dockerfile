@@ -1,74 +1,65 @@
 FROM php:8.3-apache
 
 # -------------------------------------------------
-# 1. System packages
+# 1. System packages + Node
 # -------------------------------------------------
 RUN apt-get update && apt-get install -y \
-    tesseract-ocr \
-    tesseract-ocr-eng \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    zip \
-    unzip \
-    git \
-    curl \
+    git zip unzip curl \
+    libpng-dev libjpeg-dev libfreetype6-dev \
     libpq-dev \
+    tesseract-ocr tesseract-ocr-eng \
+    nodejs npm \
     && docker-php-ext-install pdo pdo_pgsql \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # -------------------------------------------------
-# 2. Enable Apache rewrite
+# 2. Apache config
 # -------------------------------------------------
 RUN a2enmod rewrite
-
-# -------------------------------------------------
-# 3. Apache → Laravel public
-# -------------------------------------------------
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+
 RUN sed -ri 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
     /etc/apache2/sites-available/*.conf \
     /etc/apache2/apache2.conf \
     /etc/apache2/conf-available/*.conf
 
 # -------------------------------------------------
-# 4. Install Node.js (FOR VITE)
-# -------------------------------------------------
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs
-
-# -------------------------------------------------
-# 5. Workdir
+# 3. Workdir
 # -------------------------------------------------
 WORKDIR /var/www/html
 
 # -------------------------------------------------
-# 6. Copy app
+# 4. Copy app
 # -------------------------------------------------
 COPY . .
 
 # -------------------------------------------------
-# 7. Prepare Laravel cache directories (FIX)
+# 5. Composer (NO scripts)
 # -------------------------------------------------
-RUN mkdir -p \
-    storage/framework/cache \
-    storage/framework/sessions \
-    storage/framework/views \
-    bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# -------------------------------------------------
-# 8. Composer (NOW SAFE)
-# -------------------------------------------------
 RUN composer install \
     --no-dev \
     --no-interaction \
     --prefer-dist \
-    --optimize-autoloader
+    --optimize-autoloader \
+    --no-scripts
 
 # -------------------------------------------------
-# 9. Vite build
+# 6. BUILD VITE (THIS FIXES 500 ERROR)
 # -------------------------------------------------
 RUN npm install && npm run build
+
+# -------------------------------------------------
+# 7. Permissions
+# -------------------------------------------------
+RUN mkdir -p storage/framework/{cache,sessions,views} && \
+    chown -R www-data:www-data storage bootstrap/cache
+
+EXPOSE 80
+
+# -------------------------------------------------
+# 8. Runtime
+# -------------------------------------------------
+CMD php artisan storage:link || true && apache2-foreground
